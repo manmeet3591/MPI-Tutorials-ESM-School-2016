@@ -1,0 +1,72 @@
+localA=
+     0.0      1.0      2.0      3.0      4.0      5.0      6.0      7.0 
+     1.0      2.0      3.0      4.0      5.0      6.0      7.0      8.0 
+localB=
+     0.0     -1.0     -2.0     -3.0     -4.0     -5.0     -6.0     -7.0 
+     1.0      0.0     -1.0     -2.0     -3.0     -4.0     -5.0     -6.0 
+localA=
+     0.0      1.0      2.0      3.0      4.0      5.0      6.0      7.0 
+     1.0      2.0      3.0      4.0      5.0      6.0      7.0      8.0 
+localB=
+     0.0     -1.0     -2.0     -3.0     -4.0     -5.0     -6.0     -7.0 
+     1.0      0.0     -1.0     -2.0     -3.0     -4.0     -5.0     -6.0 
+localC=
+   140.0    112.0     84.0     56.0     28.0      0.0    -28.0    -56.0 
+   168.0    132.0     96.0     60.0     24.0    -12.0    -48.0    -84.0 
+globalC = 
+   140.0    112.0     84.0     56.0     28.0      0.0    -28.0    -56.0 
+   168.0    132.0     96.0     60.0     24.0    -12.0    -48.0    -84.0 
+   196.0    152.0    108.0     64.0     20.0    -24.0    -68.0   -112.0 
+   224.0    172.0    120.0     68.0     16.0    -36.0    -88.0   -140.0 
+   252.0    192.0    132.0     72.0     12.0    -48.0   -108.0   -168.0 
+   280.0    212.0    144.0     76.0      8.0    -60.0   -128.0   -196.0 
+   308.0    232.0    156.0     80.0      4.0    -72.0   -148.0   -224.0 
+   336.0    252.0    168.0     84.0      0.0    -84.0   -168.0   -252.0 
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@iitmc27n45-ib0>
+Subject: Job 462667: <#!/bin/ksh;#BSUB -q "cccr-res";#BSUB -x;#BSUB -o "a.out"; export I_MPI_FABRICS=shm:dapl;mpirun -n 4 ./matmult.x> in cluster <iitmlsfcluster> Done
+
+Job <#!/bin/ksh;#BSUB -q "cccr-res";#BSUB -x;#BSUB -o "a.out"; export I_MPI_FABRICS=shm:dapl;mpirun -n 4 ./matmult.x> was submitted from host <iitmlogin5-ib0> by user <msingh> in cluster <iitmlsfcluster>.
+Job was executed on host(s) <iitmc27n45-ib0>, in queue <cccr-res>, as user <msingh> in cluster <iitmlsfcluster>.
+</moes/home/msingh> was used as the home directory.
+</iitm2/cccr-res/msingh/mpi_tutorials/MPI/7_MatMult> was used as the working directory.
+Started at Mon Jun 27 22:01:13 2016
+Results reported on Mon Jun 27 22:01:14 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/ksh
+#BSUB -q "cccr-res"
+#BSUB -x
+#BSUB -o "a.out"
+
+export I_MPI_FABRICS=shm:dapl
+mpirun -n 4 ./matmult.x
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   0.44 sec.
+    Max Memory :                                 24 MB
+    Average Memory :                             -
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              -
+    Max Threads :                                -
+    Job Energy Consumption :                     -
+    Cycles Per Instruction :                     -
+    Giga Instructions Per Second :               -
+    Gigabytes per Second :                       -
+    Giga FLoating-point Operations Per Second :  -
+    Run time :                                   1 sec.
+    Turnaround time :                            37 sec.
+
+The output (if any) is above this job summary.
+

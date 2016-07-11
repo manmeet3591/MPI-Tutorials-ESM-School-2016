@@ -1,0 +1,51 @@
+Greetings from Process 1
+Greetings from Process 2
+Greetings from Process 3
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@iitmc03n47-ib0>
+Subject: Job 459357: <#!/bin/ksh;#BSUB -q "cccr-res";#BSUB -x;#BSUB -o "a.out"; export I_MPI_FABRICS=shm:dapl;mpirun -n 4 ./greetings.x> in cluster <iitmlsfcluster> Done
+
+Job <#!/bin/ksh;#BSUB -q "cccr-res";#BSUB -x;#BSUB -o "a.out"; export I_MPI_FABRICS=shm:dapl;mpirun -n 4 ./greetings.x> was submitted from host <iitmlogin5-ib0> by user <msingh> in cluster <iitmlsfcluster>.
+Job was executed on host(s) <iitmc03n47-ib0>, in queue <cccr-res>, as user <msingh> in cluster <iitmlsfcluster>.
+</moes/home/msingh> was used as the home directory.
+</iitm2/cccr-res/msingh/mpi_tutorials/MPI/2_Greetings> was used as the working directory.
+Started at Sun Jun 26 16:42:29 2016
+Results reported on Sun Jun 26 16:42:31 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/ksh
+#BSUB -q "cccr-res"
+#BSUB -x
+#BSUB -o "a.out"
+
+export I_MPI_FABRICS=shm:dapl
+mpirun -n 4 ./greetings.x
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   0.43 sec.
+    Max Memory :                                 24 MB
+    Average Memory :                             -
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              -
+    Max Threads :                                -
+    Job Energy Consumption :                     -
+    Cycles Per Instruction :                     -
+    Giga Instructions Per Second :               -
+    Gigabytes per Second :                       -
+    Giga FLoating-point Operations Per Second :  -
+    Run time :                                   2 sec.
+    Turnaround time :                            3 sec.
+
+The output (if any) is above this job summary.
+

@@ -1,0 +1,128 @@
+My Cartesian coordinates: (0, 1)
+Message received:
+ Greetings from process (1, 1) 
+ Greetings from process (0, 0)
+My Cartesian coordinates: (1, 1)
+Message received:
+ Greetings from process (0, 1) 
+ Greetings from process (1, 0)
+My Cartesian coordinates: (0, 0)
+Message received:
+ Greetings from process (1, 0) 
+ Greetings from process (0, 1)
+My Cartesian coordinates: (1, 0)
+Message received:
+ Greetings from process (0, 0) 
+ Greetings from process (1, 1)
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@iitmc13n35-ib0>
+Subject: Job 462697: <#!/bin/ksh;#BSUB -q "cccr-res";#BSUB -x;#BSUB -o "a.out"; export I_MPI_FABRICS=shm:dapl;mpirun -n 4 ./greetings2D.x> in cluster <iitmlsfcluster> Done
+
+Job <#!/bin/ksh;#BSUB -q "cccr-res";#BSUB -x;#BSUB -o "a.out"; export I_MPI_FABRICS=shm:dapl;mpirun -n 4 ./greetings2D.x> was submitted from host <iitmlogin5-ib0> by user <msingh> in cluster <iitmlsfcluster>.
+Job was executed on host(s) <iitmc13n35-ib0>, in queue <cccr-res>, as user <msingh> in cluster <iitmlsfcluster>.
+</moes/home/msingh> was used as the home directory.
+</iitm2/cccr-res/msingh/mpi_tutorials/MPI/10_Greetings2D> was used as the working directory.
+Started at Mon Jun 27 22:14:20 2016
+Results reported on Mon Jun 27 22:14:26 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/ksh
+#BSUB -q "cccr-res"
+#BSUB -x
+#BSUB -o "a.out"
+
+export I_MPI_FABRICS=shm:dapl
+mpirun -n 4 ./greetings2D.x
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   21.91 sec.
+    Max Memory :                                 24 MB
+    Average Memory :                             22.00 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              9
+    Max Threads :                                16
+    Job Energy Consumption :                     -
+    Cycles Per Instruction :                     -
+    Giga Instructions Per Second :               -
+    Gigabytes per Second :                       -
+    Giga FLoating-point Operations Per Second :  -
+    Run time :                                   6 sec.
+    Turnaround time :                            8 sec.
+
+The output (if any) is above this job summary.
+
+My Cartesian coordinates: (1, 0)
+Message received:
+ Greetings from process (0, 0) 
+ Greetings from process (1, 1)
+My Cartesian coordinates: (0, 0)
+Message received:
+ Greetings from process (1, 0) 
+ Greetings from process (0, 1)
+My Cartesian coordinates: (0, 1)
+Message received:
+ Greetings from process (1, 1) 
+ Greetings from process (0, 0)
+My Cartesian coordinates: (1, 1)
+Message received:
+ Greetings from process (0, 1) 
+ Greetings from process (1, 0)
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@iitmc24n12-ib0>
+Subject: Job 462698: <#!/bin/ksh;#BSUB -q "cccr-res";#BSUB -x;#BSUB -o "a.out"; export I_MPI_FABRICS=shm:dapl;mpirun -n 4 ./greetings2D.x> in cluster <iitmlsfcluster> Done
+
+Job <#!/bin/ksh;#BSUB -q "cccr-res";#BSUB -x;#BSUB -o "a.out"; export I_MPI_FABRICS=shm:dapl;mpirun -n 4 ./greetings2D.x> was submitted from host <iitmlogin5-ib0> by user <msingh> in cluster <iitmlsfcluster>.
+Job was executed on host(s) <iitmc24n12-ib0>, in queue <cccr-res>, as user <msingh> in cluster <iitmlsfcluster>.
+</moes/home/msingh> was used as the home directory.
+</iitm2/cccr-res/msingh/mpi_tutorials/MPI/10_Greetings2D> was used as the working directory.
+Started at Mon Jun 27 22:14:25 2016
+Results reported on Mon Jun 27 22:14:31 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/ksh
+#BSUB -q "cccr-res"
+#BSUB -x
+#BSUB -o "a.out"
+
+export I_MPI_FABRICS=shm:dapl
+mpirun -n 4 ./greetings2D.x
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   21.97 sec.
+    Max Memory :                                 23 MB
+    Average Memory :                             22.00 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              9
+    Max Threads :                                16
+    Job Energy Consumption :                     -
+    Cycles Per Instruction :                     -
+    Giga Instructions Per Second :               -
+    Gigabytes per Second :                       -
+    Giga FLoating-point Operations Per Second :  -
+    Run time :                                   6 sec.
+    Turnaround time :                            6 sec.
+
+The output (if any) is above this job summary.
+

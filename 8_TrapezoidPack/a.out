@@ -1,0 +1,53 @@
+Enter integral lower bound, upper bound and total integration steps: 
+Process 1, WITH N=11045 TRAPEZOIDS, INTEGRAL=0.000000
+Process 2, WITH N=11045 TRAPEZOIDS, INTEGRAL=0.000000
+Process 3, WITH N=11045 TRAPEZOIDS, INTEGRAL=0.000000
+Process 0, WITH N=11045 TRAPEZOIDS, INTEGRAL=-0.000000
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@iitmc18n14-ib0>
+Subject: Job 462694: <#!/bin/ksh;#BSUB -q "cccr-res";#BSUB -x;#BSUB -o "a.out"; export I_MPI_FABRICS=shm:dapl;mpirun -n 4 ./trapezoid.x> in cluster <iitmlsfcluster> Done
+
+Job <#!/bin/ksh;#BSUB -q "cccr-res";#BSUB -x;#BSUB -o "a.out"; export I_MPI_FABRICS=shm:dapl;mpirun -n 4 ./trapezoid.x> was submitted from host <iitmlogin5-ib0> by user <msingh> in cluster <iitmlsfcluster>.
+Job was executed on host(s) <iitmc18n14-ib0>, in queue <cccr-res>, as user <msingh> in cluster <iitmlsfcluster>.
+</moes/home/msingh> was used as the home directory.
+</iitm2/cccr-res/msingh/mpi_tutorials/MPI/8_TrapezoidPack> was used as the working directory.
+Started at Mon Jun 27 22:12:56 2016
+Results reported on Mon Jun 27 22:13:02 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/ksh
+#BSUB -q "cccr-res"
+#BSUB -x
+#BSUB -o "a.out"
+
+export I_MPI_FABRICS=shm:dapl
+mpirun -n 4 ./trapezoid.x
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   21.77 sec.
+    Max Memory :                                 24 MB
+    Average Memory :                             23.00 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              9
+    Max Threads :                                16
+    Job Energy Consumption :                     -
+    Cycles Per Instruction :                     -
+    Giga Instructions Per Second :               -
+    Gigabytes per Second :                       -
+    Giga FLoating-point Operations Per Second :  -
+    Run time :                                   6 sec.
+    Turnaround time :                            8 sec.
+
+The output (if any) is above this job summary.
+

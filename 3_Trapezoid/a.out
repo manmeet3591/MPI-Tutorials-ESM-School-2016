@@ -1,0 +1,111 @@
+WITH N=100000 TRAPEZOIDS, INTEGRAL=1.462652
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@iitmc08n38-ib0>
+Subject: Job 462615: <#!/bin/ksh;#BSUB -q "cccr-res";#BSUB -x;#BSUB -o "a.out"; export I_MPI_FABRICS=shm:dapl;mpirun -n 4 ./trapezoid.x> in cluster <iitmlsfcluster> Done
+
+Job <#!/bin/ksh;#BSUB -q "cccr-res";#BSUB -x;#BSUB -o "a.out"; export I_MPI_FABRICS=shm:dapl;mpirun -n 4 ./trapezoid.x> was submitted from host <iitmlogin5-ib0> by user <msingh> in cluster <iitmlsfcluster>.
+Job was executed on host(s) <iitmc08n38-ib0>, in queue <cccr-res>, as user <msingh> in cluster <iitmlsfcluster>.
+</moes/home/msingh> was used as the home directory.
+</iitm2/cccr-res/msingh/mpi_tutorials/MPI/3_Trapezoid> was used as the working directory.
+Started at Mon Jun 27 21:28:29 2016
+Results reported on Mon Jun 27 21:28:30 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/ksh
+#BSUB -q "cccr-res"
+#BSUB -x
+#BSUB -o "a.out"
+
+export I_MPI_FABRICS=shm:dapl
+mpirun -n 4 ./trapezoid.x
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   0.45 sec.
+    Max Memory :                                 24 MB
+    Average Memory :                             -
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              -
+    Max Threads :                                -
+    Job Energy Consumption :                     -
+    Cycles Per Instruction :                     -
+    Giga Instructions Per Second :               -
+    Gigabytes per Second :                       -
+    Giga FLoating-point Operations Per Second :  -
+    Run time :                                   1 sec.
+    Turnaround time :                            2 sec.
+
+The output (if any) is above this job summary.
+
+[proxy:0:0@iitmc31n11] Ctrl-C caught... cleaning up processes
+Ctrl-C caught... cleaning up processes
+Ctrl-C caught... cleaning up processes
+Ctrl-C caught... cleaning up processes
+[proxy:0:0@iitmc31n11] [proxy:0:0@iitmc31n11] [proxy:0:0@iitmc31n11] [proxy:0:0@iitmc31n11] Invalid argument: kill(pid, 18)
+18 signal is not supported on the system, SIGKILL will be used to terminate the job
+[proxy:0:0@iitmc31n11] Invalid argument: kill(pid, 9)
+9 signal is not supported on the system, SIGKILL will be used to terminate the job
+[proxy:0:0@iitmc31n11] Invalid argument: kill(pid, 9)
+9 signal is not supported on the system, SIGKILL will be used to terminate the job
+[proxy:0:0@iitmc31n11] Invalid argument: kill(pid, 9)
+9 signal is not supported on the system, SIGKILL will be used to terminate the job
+[proxy:0:0@iitmc31n11] Invalid argument: kill(pid, 9)
+9 signal is not supported on the system, SIGKILL will be used to terminate the job
+[proxy:0:0@iitmc31n11] Invalid argument: kill(pid, 9)
+9 signal is not supported on the system, SIGKILL will be used to terminate the job
+[proxy:0:0@iitmc31n11] Invalid argument: kill(pid, 9)
+9 signal is not supported on the system, SIGKILL will be used to terminate the job
+[proxy:0:0@iitmc31n11] Invalid argument: kill(pid, 9)
+9 signal is not supported on the system, SIGKILL will be used to terminate the job
+[proxy:0:0@iitmc31n11] Invalid argument: kill(pid, 9)
+9 signal is not supported on the system, SIGKILL will be used to terminate the job
+[proxy:0:0@iitmc31n11] Invalid argument: kill(pid, 9)
+9 signal is not supported on the system, SIGKILL will be used to terminate the job
+Ctrl-C caught... cleaning up processes
+Ctrl-C caught... cleaning up processes
+Ctrl-C caught... cleaning up processes
+Ctrl-C caught... cleaning up processes
+[mpiexec@iitmc31n11] control_cb (./pm/pmiserv/pmiserv_cb.c:717): assert (!closed) failed
+[mpiexec@iitmc31n11] HYDT_dmxu_poll_wait_for_event (./tools/demux/demux_poll.c:77): callback returned error status
+[mpiexec@iitmc31n11] HYD_pmci_wait_for_completion (./pm/pmiserv/pmiserv_pmci.c:435): error waiting for event
+[mpiexec@iitmc31n11] main (./ui/mpich/mpiexec.c:901): process manager error waiting for completion
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@iitmc31n11-ib0>
+Subject: Job 462653: <#!/bin/ksh;#BSUB -q "cccr-res";#BSUB -x;#BSUB -o "a.out"; export I_MPI_FABRICS=shm:dapl;mpirun -n 1000 ./trapezoid.x> in cluster <iitmlsfcluster> Exited
+
+Job <#!/bin/ksh;#BSUB -q "cccr-res";#BSUB -x;#BSUB -o "a.out"; export I_MPI_FABRICS=shm:dapl;mpirun -n 1000 ./trapezoid.x> was submitted from host <iitmlogin5-ib0> by user <msingh> in cluster <iitmlsfcluster>.
+Job was executed on host(s) <iitmc31n11-ib0>, in queue <cccr-res>, as user <msingh> in cluster <iitmlsfcluster>.
+</moes/home/msingh> was used as the home directory.
+</iitm2/cccr-res/msingh/mpi_tutorials/MPI/3_Trapezoid> was used as the working directory.
+Started at Mon Jun 27 21:50:20 2016
+Results reported on Mon Jun 27 21:51:28 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/ksh
+#BSUB -q "cccr-res"
+#BSUB -x
+#BSUB -o "a.out"
+
+export I_MPI_FABRICS=shm:dapl
+mpirun -n 1000 ./trapezoid.x
+
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited
+The output (if any) is above this job summary.
+
