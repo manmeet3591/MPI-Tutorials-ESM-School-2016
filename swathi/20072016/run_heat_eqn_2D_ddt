@@ -1,0 +1,27 @@
+#!/bin/csh -f 
+
+cd /iitm1/cccr/guest9/swathi/20072016
+set OUTPUT_PATH = /iitm1/cccr/guest9/swathi/20072016 # change this to where you want the output to go
+set MPPNCCOMBINE = "/iitm1/cccr/guest9/iitm-esm/src/postproc/mppncombine/mppnccombine"
+set NPES = 9 # Try this on more number of PE's
+set WORKDIR = $OUTPUT_PATH/tempdir
+cd $WORKDIR
+# Change what follows to your system template.
+#
+/bin/rm heat.nc* 
+# Change what follows to your system template.
+#
+
+cat > heat_eqn_nml <<EOF
+&heat_eqn_nml
+ ni = 12,
+ nj = 12,
+ del_t = 1.0e-3,
+ nt_steps = 200,
+ io_int=5,
+ domain_layout=3,3
+/
+EOF
+ddt
+exit
+

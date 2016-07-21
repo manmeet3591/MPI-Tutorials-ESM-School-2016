@@ -1,0 +1,37 @@
+
+MPP module $Id: mpp_comm.F90,v 11.0 2004/09/28 20:04:23 fms Exp $$Name: latest $
+MPP started with NPES=   9
+Using MPI library for message passing...
+Realtime clock resolution=  1.0000E-06 sec (   1000000 ticks/sec)
+Clock rolls over after   9.2234E+12 sec ( 9223372036854775806 ticks)
+
+MPP module $Id mpp_parameter.F90 $$Name: latest $
+
+MPP module $Id mpp_data.F90 $$Name: latest $
+
+MPP module $Id mpp_util.F90 $$Name: latest $
+
+MPP_DOMAINS module $Id: mpp_domains_misc.F90,v 11.0 2004/09/28 20:04:49 fms Exp $$Name: latest $
+
+MPP_DOMAINS module $Id mpp.F90 $$Name: latest $
+
+MPP_DOMAINS module $Id mpp_datatype.F90 $$Name: latest $
+
+MPP_DOMAINS module $Id mpp_domains_util.F90 $$Name: latest $
+
+MPP_IO module $Id: mpp_io_misc.F90,v 11.0 2004/09/28 20:05:16 fms Exp $
+MPP_IO module $Name: latest $
+
+MPP_IO module $Id: mpp_domains.F90,v 11.0 2004/09/28 20:04:44 fms Exp $
+MPP_IO module $Name: latest $
+
+MPP_IO module $Id: mpp_io_util.F90,v 11.0 2004/09/28 20:05:25 fms Exp $
+MPP_IO module $Name: latest $
+
+MPP_IO module $Id: mpp_domains_define.F90,v 11.0 2004/09/28 20:04:39 fms Exp $
+MPP_IO module $Name: latest $
+
+MPP_IO module $Id: mpp_domains_reduce.F90,v 11.0 2004/09/28 20:04:53 fms Exp $
+MPP_IO module $Name: latest $
+
+Using netCDF library version 4.2.1 of Nov 19 2014 12:56:05 $

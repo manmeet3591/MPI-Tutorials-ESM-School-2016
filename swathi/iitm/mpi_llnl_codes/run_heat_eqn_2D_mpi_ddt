@@ -1,0 +1,67 @@
+#!/bin/csh -f 
+#PBS -V
+#PBS -l walltime=2:00:00
+#PBS -l select=1:ncpus=16:mpiprocs=16
+#PBS -l place=scatter:excl
+#PBS -q workq
+
+set echo on
+# 05/10/10..For tutorial purposes..
+cd /scratch/swathi/mpi_llnl_codes
+source /usr/share/Modules/init/csh
+module purge
+module load netcdf-4.1.2
+module load intel-cluster-studio-2013
+module load forge-5.0.1
+module list
+
+
+set OUTPUT_PATH = /scratch/swathi/mpi_llnl_codes # change this to where you want the output to go
+set MPPNCCOMBINE = "/scratch/swathi/mom4p1_benchmark/bin/mppnccombine.hpcs_hp" #  
+set NPES = 8 # Try this on more number of PE's
+set WORKDIR = $OUTPUT_PATH/tempdir
+set FORT_FILE = heat_eqn_2D_mpi.f90
+cd $WORKDIR
+/bin/rm heat.nc* 
+# Change what follows to your system template.
+#
+set  FC       = "mpiifort -what"
+set  LD       = mpiifort
+set   FFLAGS =  "-I/usr/local/include -I/app/netcdf-4.1.2/include  -fp-model precise -stack_temps -safe_cray_ptr -ftz -i_dynamic -assume byterecl -g -i4  -override_limits  -traceback -check all"
+set  LDFLAGS  = "-L/app/netcdf-4.1.2/lib -lnetcdf -lnetcdff -lmpi" 
+set   CFLAGS = -D__IFC
+
+cp ../$FORT_FILE .
+$FC $FFLAGS $FORT_FILE $LDFLAGS 
+set BOMB = 0
+
+cat > heat_eqn_nml <<EOF
+&heat_eqn_nml
+ ni = 1000,
+ nj = 1000,
+ del_t = 1.0e-16,
+ nt_steps = 5,
+ io_int=5,
+ domain_layout=4,2
+/
+EOF
+
+#mpiexec_mpt -np $NPES  ./a.out > results || set BOMB = 1
+#mpiexec_mpt -np $NPES -tv ./a.out || set BOMB = 1
+#totalview mpirun -a -np $NPES a.out > results || set BOMB = 1
+ddt --start mpirun -np $NPES ./a.out > results || set BOMB = 1
+cp results $OUTPUT_PATH
+
+#if ($BOMB == 0) then
+# set diag_list = (`/bin/ls *nc.0000`)    
+# echo "diag_list=" $diag_list
+# foreach file ($diag_list)
+#   set file_nam = $file:r
+  # $MPPNCCOMBINE  $file_nam
+#   mv $file_nam $OUTPUT_PATH
+#   /bin/rm $file_nam* 
+# end
+#endif
+
+exit
+

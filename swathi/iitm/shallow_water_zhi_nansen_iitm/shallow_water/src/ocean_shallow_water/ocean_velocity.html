@@ -1,0 +1,222 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=EUC-JP">
+<title>Module ocean_velocity_mod</title>
+<link type="text/css" href="http://www.gfdl.noaa.gov/~fms/style/doc.css" rel="stylesheet">
+<STYLE TYPE="text/css">
+          .fixed {
+            font-size:medium;
+            font-family:monospace;
+            border-style:none;
+            border-width:0.1em;
+            padding:0.1em;
+            color:#663366;
+          }
+        </STYLE>
+</head>
+<body>
+<a name="TOP"></a><font class="header" size="1"><a href="#PUBLIC INTERFACE">PUBLIC INTERFACE </a>~
+          <a href="#PUBLIC DATA">PUBLIC DATA </a>~
+          <a href="#PUBLIC ROUTINES">PUBLIC ROUTINES </a>~
+          <a href="#NAMELIST">NAMELIST </a>~
+          <a href="#DIAGNOSTIC FIELDS">DIAGNOSTIC FIELDS </a>~
+          <a href="#ERROR MESSAGES">ERROR MESSAGES </a>~
+          <a href="#REFERENCES">REFERENCES </a>~ 
+          <a href="#NOTES">NOTES</a></font>
+<hr>
+<h2>Module ocean_velocity_mod</h2>
+<a name="HEADER"></a>
+<!-- BEGIN HEADER -->
+<div>
+<b>Contact:&nbsp;</b><a href="mailto:Ronald.Pacanowski@noaa.gov">Ronald Pacanowski </a>,&nbsp;
+    <a href="mailto:Zhi.Liang@noaa.gov">Zhi Liang </a>
+<br>
+<b>Reviewers:&nbsp;</b>
+<br>
+<b>Change History:&nbsp;</b><a href="http://www.gfdl.noaa.gov/fms-cgi-bin/cvsweb.cgi/FMS/ocean/shallow_water">WebCVS Log</a>
+<br>
+<br>
+</div>
+<!-- END HEADER -->
+<a name="OVERVIEW"></a>
+<hr>
+<h4>OVERVIEW</h4>
+<!-- BEGIN OVERVIEW -->
+<p class="text">   Time step velocity </p>
+<!-- END OVERVIEW -->
+<a name="DESCRIPTION"></a>
+<!-- BEGIN DESCRIPTION -->
+<div>   This module steps the velocity field forward in time using a 
+   leap-frog time stepping scheme. </div>
+<br>
+<!-- END DESCRIPTION -->
+<a name="OTHER MODULES USED"></a>
+<hr>
+<h4>OTHER MODULES USED</h4>
+<!-- BEGIN OTHER MODULES USED -->
+<div>
+<pre>         mpp_mod<br> mpp_domains_mod<br>         fms_mod<br>time_manager_mod<br>diag_manager_mod<br>   constants_mod<br> ocean_types_mod</pre>
+</div>
+<!-- END OTHER MODULES USED -->
+<!-- BEGIN PUBLIC INTERFACE -->
+<a name="PUBLIC INTERFACE"></a>
+<hr>
+<h4>PUBLIC INTERFACE</h4>
+<div>
+<dl>
+<dt>
+<a href="#ocean_velocity_init">ocean_velocity_init</a>:</dt>
+<dd></dd>
+<dt>
+<a href="#update_ocean_velocity">update_ocean_velocity</a>:</dt>
+<dd></dd>
+<dt>
+<a href="#ocean_velocity_end">ocean_velocity_end</a>:</dt>
+<dd></dd>
+</dl>
+</div>
+<br>
+<!-- END PUBLIC INTERFACE -->
+<a name="PUBLIC DATA"></a>
+<hr>
+<h4>PUBLIC DATA</h4>
+<!-- BEGIN PUBLIC DATA -->
+<div>None.<br>
+<br>
+</div>
+<!-- END PUBLIC DATA -->
+<a name="PUBLIC ROUTINES"></a>
+<hr>
+<h4>PUBLIC ROUTINES</h4>
+<!-- BEGIN PUBLIC ROUTINES -->
+<ol type="a">
+<li>
+<a name="ocean_velocity_init"></a>
+<h4>ocean_velocity_init</h4>
+<dl>
+<dt>
+<b>DESCRIPTION</b>
+</dt>
+<dd>   Initialize the velocity equation </dd>
+<br>
+<br>
+</dl>
+</li>
+<li>
+<a name="update_ocean_velocity"></a>
+<h4>update_ocean_velocity</h4>
+<dl>
+<dt>
+<b>DESCRIPTION</b>
+</dt>
+<dd>   Update velocity components using a leap-frog time scheme. </dd>
+<br>
+<br>
+</dl>
+</li>
+<li>
+<a name="ocean_velocity_end"></a>
+<h4>ocean_velocity_end</h4>
+<dl>
+<dt>
+<b>DESCRIPTION</b>
+</dt>
+<dd>   Write the velocity field to a restart </dd>
+<br>
+<br>
+</dl>
+</li>
+</ol>
+<!-- END PUBLIC ROUTINES -->
+<a name="PUBLIC TYPES"></a>
+<!-- BEGIN PUBLIC TYPES -->
+<!-- END PUBLIC TYPES --><a name="NAMELIST"></a>
+<!-- BEGIN NAMELIST -->
+<hr>
+<h4>NAMELIST</h4>
+<div>
+<b>&amp;ocean_velocity_nml</b>
+<br>
+<br>
+<div>
+<dl>
+<dt>
+<tt>wind_patch_taux</tt>
+</dt>
+<dl>   wind stress anomoly in zonal direction. <br>
+<span class="type">[real, default: 0.0]</span>
+</dl>
+<dt>
+<tt>wind_patch_tauy</tt>
+</dt>
+<dl>   wind stress anomoly in merional direction. <br>
+<span class="type">[real, default: 0.0]</span>
+</dl>
+<dt>
+<tt>wind_patch_scale</tt>
+</dt>
+<dl>   gaussian scale of wind stress patch. <br>
+<span class="type">[real, default: 1.0]</span>
+</dl>
+<dt>
+<tt>wind_patch_lon</tt>
+</dt>
+<dl>   center longitude (degrees) of wind stress patch <br>
+<span class="type">[real, default: 0.0]</span>
+</dl>
+<dt>
+<tt>wind_patch_lat</tt>
+</dt>
+<dl>   center latitude (degrees) of wind stress patch <br>
+<span class="type">[real, default: 0.0]</span>
+</dl>
+<dt>
+<tt>rayleigh_timescale</tt>
+</dt>
+<dl>   time scale for rayleigh friction in days <br>
+<span class="type">[real, default: 100.0]</span>
+</dl>
+<dt>
+<tt>diag_freq</tt>
+</dt>
+<dl>   Number of time steps between which global diagnostics are computed <br>
+<span class="type">[integer, default: 1]</span>
+</dl>
+<dt>
+<tt>wind_type</tt>
+</dt>
+<dl>   type of wind stress. Its value can be "constant_wind"(default),
+   "wind_patch" or "frank_bryan_winds". <br>
+<span class="type">[character(len=40), default: constant_wind]</span>
+</dl>
+</dl>
+</div>
+</div>
+<br>
+<!-- END NAMELIST -->
+<a name="DIAGNOSTIC FIELDS"></a>
+<!-- BEGIN DIAGNOSTIC FIELDS -->
+<!-- END DIAGNOSTIC FIELDS --><a name="DATA SETS"></a>
+<!-- BEGIN DATA SETS -->
+<hr>
+<h4>DATA SETS</h4>
+<div>None.<br>
+<br>
+</div>
+<!-- END DATA SETS -->
+<a name="PUBLIC CODE"></a>
+<!-- BEGIN PUBLIC CODE -->
+<!-- END PUBLIC CODE --><a name="ERROR MESSAGES"></a>
+<!-- BEGIN ERROR MESSAGES -->
+<hr>
+<h4>ERROR MESSAGES</h4>
+<div>None.<br>
+<br>
+</div>
+<!-- END ERROR MESSAGES -->
+<hr>
+<div align="right">
+<font size="-1"><a href="#TOP">top</a></font>
+</div>
+</body>
+</html>

@@ -1,0 +1,174 @@
+#!/bin/tcsh -f
+#PBS -V
+#PBS -l walltime=1:00:00
+#PBS -l select=1:ncpus=16:mpiprocs=16
+#PBS -l place=scatter:excl
+#PBS -o run_batch.log
+#PBS -j oe
+# Minimal runscript: mom4_test1
+  limit stacksize 20000000
+  source /usr/share/Modules/init/tcsh
+  module load intel-cluster-studio-2013
+  module load netcdf-4.1.2
+  module list
+  cd /scratch/swathi/shallow_water_zhi_nansen/shallow_water/scripts
+  set echo
+  set platform      = hpcs_hp                         # A unique identifier for your platform
+  set name          = shallow_water                   # Name of the experiment
+  set npes          = 12                               # number of processors
+  set days          = 1                            # number of days to run
+  set months        = 0                               # number of months to run
+  set expdir        = $cwd:h                          # directory of the experiment
+  set code_dir      = $expdir/src                     # source code directory
+  set preprocessing = $expdir/preprocessing_tsunami   # Preprocessing directory
+  set workdir       = $expdir/workdir_tsunami_linear_${platform}    # where the model is run and model output is produced
+  set executable    = $expdir/exec_$platform/fms_$name.x        # executable created after compilation
+  set diagtable     = $expdir/input/diag_table        # path to diagnositics table
+  set bindir        = $expdir/bin                     # path to executalbes.
+  set mppnccombine  = $bindir/mppnccombine.$platform  # path to executable mppnccombine
+  set time_stamp    = $bindir/time_stamp.csh          # path to cshell to generate the date
+  set mkmfTemplate  = $bindir/mkmf.template.$platform # path to template for your platform
+  set mkmf          = $bindir/mkmf                    # path to executable mkmf
+  set pathnames     = $code_dir/path_names            # path to file containing list of source paths
+  set cppDefs       = ( "-Duse_netCDF -Duse_libMPI" ) # list of cpp #defines to be passed to the source files
+  if($npes == 1) set cppDefs  = ( "-Duse_netCDF" )  
+
+#--------------------------------------------------------------------------------------------------------
+# compile mppnccombine.c, needed only if $npes > 1
+  if ( $npes > 1 && ! -f $mppnccombine ) then
+    cc -O -o $mppnccombine -I/usr/local/include -I/application/netcdf/netcdf-3.6.3/include -L/application/netcdf-3.6.3/netcdf/lib $code_dir/postprocessing/mppnccombine.c -lnetcdf
+  endif
+
+#--------------------------------------------------------------------------------------------------------
+# setup directory structure
+  if ( ! -d $executable:h )    mkdir  $executable:h
+  if ( ! -d $workdir )         mkdir  $workdir
+  if ( ! -d $workdir/INPUT )   mkdir  $workdir/INPUT
+  if ( ! -d $workdir/RESTART ) mkdir  $workdir/RESTART
+#--------------------------------------------------------------------------------------------------------
+# compile the model code and create executable
+  cd $executable:h
+  $mkmf -f -a $code_dir -t $mkmfTemplate -p $executable:t -c "$cppDefs" $pathnames $code_dir/shared/mpp/include /usr/local/include
+
+  make -f Makefile
+
+#--------------------------------------------------------------------------------------------------------
+# get data sets, input data and executable
+  cd $workdir
+
+    cat > input.nml <<EOF
+ &fms_io_nml
+       threading_write = 'multi'
+       fileset_write = 'multi' /
+
+ &ocean_freesurf_nml
+        / 
+ &ocean_grid_nml
+       read_my_grid=.true. /
+
+ &ocean_horz_diffuse_nml
+       vel_micom = 0.2 /
+
+ &ocean_model_nml
+       robert    = 0.01
+       nonlinear = .false. /
+
+ &ocean_solo_nml
+       date_init = 2004,12,26,6,28,0
+       dt_ocean  = 10
+       days      = $days
+       months    = $months /
+
+ &ocean_velocity_nml
+       diag_freq = 1 /
+EOF
+
+  cp $diagtable  diag_table
+  cp $executable $executable:t
+# Copy the grid_spec file 
+  cp $preprocessing/ocean_grid.nc INPUT/grid_spec.nc
+  cd INPUT
+  cp $preprocessing/ocean_freesurf.res.nc .
+  cp $preprocessing/ocean_solo.res .
+  cp $preprocessing/ocean_velocity.res.nc .
+
+#  tar xvf $preprocessing/init_cond.tar
+  cd ../
+
+#----------------------------------------------------------------------------------------------
+# run the model
+
+  if($npes > 1) then
+    mpirun -np $npes  ./$executable:t > fms.out 
+  else
+    ./$executable:t > fms.out 
+  endif
+  
+  cat fms.out
+
+#----------------------------------------------------------------------------------------------
+# generate date for file names ---
+    set begindate = `$time_stamp -bf digital`
+    if ( $begindate == "" ) set begindate = tmp`date '+%j%H%M%S'`
+    set enddate = `$time_stamp -ef digital`
+    if ( $enddate == "" ) set enddate = tmp`date '+%j%H%M%S'`
+    if ( -f time_stamp.out ) rm -f time_stamp.out
+#----------------------------------------------------------------------------------------------
+# get a tar restart file 
+  cd RESTART
+  set resfiles = `ls *.res *.nc`
+  if ( $#resfiles > 0 ) then
+     cp $workdir/input.nml .
+     cp $workdir/*_table .
+     set files = ( $resfiles input.nml *_table )
+     tar -cf $enddate.tar $files
+     rm -f $files
+  endif
+
+  cd $workdir
+
+#----------------------------------------------------------------------------------------------
+# rename ascii files with the date
+  foreach out (`ls *.out`)
+     mv $out $begindate.$out
+  end
+
+#----------------------------------------------------------------------------------------------
+# combine netcdf files
+  if ( $npes > 1 ) then
+     foreach ncfile (`/bin/ls *.nc.0000`)
+        $mppnccombine $ncfile:r
+	rm $ncfile:r.????
+     end
+  endif   
+
+#----------------------------------------------------------------------------------------------
+# rename nc files with the date
+  foreach ncfile (`/bin/ls *.nc`)
+     mv $ncfile $begindate.$ncfile
+  end
+
+  set files = `ls $begindate.*.nc`
+  if ( $#files > 0 ) then
+      tar -cf $begindate.nc.tar $files
+      rm -f $files
+  endif
+
+  unset echo
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

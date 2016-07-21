@@ -1,0 +1,11 @@
+&heat_eqn_nml
+ ni = 100,
+ nj = 100,
+ del_t = 1.0e-2,
+ nt_steps = 500,
+ io_int = 5,
+ domain_layout=5,4,
+ nit_max = 30,
+ eps = 1.0e-5,
+ delta = 1.0e-5
+/

@@ -1,0 +1,25 @@
+#! /bin/csh -f
+set echo on
+cd /iitm1/cccr/guest9/swathi/21072016
+
+set OUTPUT_PATH = /iitm1/cccr/guest9/swathi/21072016 # change this to where you want the output to go
+set WORKDIR = $OUTPUT_PATH/tempdir_debug_swm_new
+set FMS_UTILS = /iitm1/cccr/guest9/swathi/iitm/shallow_water_zhi_nansen_iitm/shallow_water/src/shared
+set FMS_UTILITIES = "$FMS_UTILS/platform $FMS_UTILS/constants $FMS_UTILS/fms $FMS_UTILS/time_manager $FMS_UTILS/mpp $FMS_UTILS/diag_manager  $FMS_UTILS/memutils"
+set MKMF = /iitm1/cccr/guest9/iitm-esm/src/mom4p1/bin/mkmf
+set FORT_FILE = heat_eqn_swm_mpp.F90
+cd $WORKDIR
+/bin/rm *
+# Change what follows to your system template.
+cat > template <<EOF
+  FC       = mpiifort
+  LD       = mpiifort
+  FFLAGS =  -I/usr/local/include -I/gpfs1/home/Libs/INTEL/NETCDF4/netcdf-4.2.1/include -Duse_libMPI -Duse_netCDF -fltconsistency -stack_temps -safe_cray_ptr -ftz -i_dynamic -assume byterecl -g -O0 -i4 -r8 -override_limits -w95 -traceback
+  LDFLAGS  = -L/gpfs1/home/Libs/INTEL/NETCDF4/netcdf-4.2.1/lib -lnetcdf -lnetcdff -lmpi 
+  CFLAGS = -D__IFC
+EOF
+cp ../$FORT_FILE .
+$MKMF -m Makefile -p a.out -t template -x $FORT_FILE $FMS_UTILITIES  $FMS_UTILS/mpp/include
+exit
+
+

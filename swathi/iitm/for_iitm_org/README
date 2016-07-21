@@ -1,0 +1,15 @@
+Instructions to set up FMS-Heat Equation code
+Edit run_heat_eqn_swm_debug
+Change the following
+
+1. OUTPUT_PATH  directory where you will put the code
+2. MPPNCCOMBINE ..This is the mppnccombine you have built for combining nc files
+3. WORKDIR -- mkdir this
+4. FMS_UTILS - This is where you have the shared code of FMS from the shallow water case
+5. MKMF - mkmf perl script.
+6. template -- Instead of using mkmf.template, we just give it here. Copy stuff from your
+   mkmf.template.xxx file and stcik it here.
+
+Good luck.
+
+swathi

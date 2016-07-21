@@ -1,0 +1,139 @@
+cd /scratch/swathi/mpi_llnl_codes
+source /usr/share/Modules/init/tcsh
+if ( 1 ) then
+set modules_shell=tcsh
+else
+set exec_prefix=/usr/bin
+set prefix=
+set postfix=
+if ( 0 ) then
+set histchar = !
+endif
+if ( 0 ) then
+if ( 0 ) then
+set postfix = set _exit=$status; ; test 0 = $_exit;
+alias module eval `/usr/bin/modulecmd tcsh !*`; set _exit=$status; ; test 0 = $_exit;
+unset exec_prefix
+unset prefix
+unset postfix
+setenv MODULESHOME /usr/share/Modules
+if ( ! 1 ) then
+if ( ! 1 ) then
+eval `/usr/bin/modulecmd tcsh purge`
+/usr/bin/modulecmd tcsh purge
+setenv CPATH /app/intel/composer_xe_2013.1.117/mkl/include:/app/intel/composer_xe_2013.1.117/tbb/include:/app/intel/composer_xe_2013.1.117/mkl/include:/app/intel/composer_xe_2013.1.117/tbb/include
+setenv LD_LIBRARY_PATH /app/intel/impi/4.1.0.024/intel64/lib:/app/intel/composer_xe_2013.1.117/tbb/lib/intel64:/app/intel/impi/4.1.0.024/intel64/lib:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/app/intel/composer_xe_2013.1.117/mpirt/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/lib/intel64:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/mkl/lib/intel64:/app/intel/composer_xe_2013.1.117/tbb/lib/intel64:/app/intel/impi/4.1.0.024/intel64/lib:/app/intel/itac/8.1.0.024/intel64/itac/slib_impi4:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/app/intel/composer_xe_2013.1.117/mpirt/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/lib/intel64:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/mkl/lib/intel64:/app/intel/composer_xe_2013.1.117/tbb/lib/intel64:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/app/intel/composer_xe_2013.1.117/mpirt/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/lib/intel64:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/mkl/lib/intel64:/app/intel/composer_xe_2013.1.117/tbb/lib/intel64:/opt/cuda/lib64
+setenv LIBRARY_PATH /app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/lib/intel64:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/mkl/lib/intel64:/app/intel/composer_xe_2013.1.117/tbb/lib/intel64:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/lib/intel64:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/mkl/lib/intel64:/app/intel/composer_xe_2013.1.117/tbb/lib/intel64
+setenv MANPATH /app/intel/impi/4.1.0.024/man:/app/intel/itac/8.1.0.024/man:/app/intel/composer_xe_2013.1.117/man/en_US:/app/intel/composer_xe_2013.1.117/man/en_US:/app/intel/composer_xe_2013.1.117/man/en_US:/app/intel/composer_xe_2013.1.117/man/en_US:/usr/local/share/man:/usr/share/man/overrides:/usr/share/man:/usr/local/man::::
+setenv MIC_LD_LIBRARY_PATH /app/intel/composer_xe_2013.1.117/compiler/lib/mic:/opt/intel/mic/coi/device-linux-release/lib:/opt/intel/mic/myo/lib:/app/intel/composer_xe_2013.1.117/compiler/lib/mic:/app/intel/composer_xe_2013.1.117/mkl/lib/mic:/app/intel/composer_xe_2013.1.117/tbb/lib/mic:/app/intel/composer_xe_2013.1.117/compiler/lib/mic:/opt/intel/mic/coi/device-linux-release/lib:/opt/intel/mic/myo/lib:/app/intel/composer_xe_2013.1.117/compiler/lib/mic:/app/intel/composer_xe_2013.1.117/mkl/lib/mic:/app/intel/composer_xe_2013.1.117/tbb/lib/mic
+setenv PATH /app/intel/impi/4.1.0.024/intel64/bin:/app/intel/impi/4.1.0.024/intel64/bin:/usr/lib64/qt-3.3/bin:/app/intel/ics/2013.0.028/bin:/app/intel/impi/4.1.0.024/intel64/bin:/app/intel/itac/8.1.0.024/intel64/bin:/app/intel/composer_xe_2013.1.117/bin/intel64:/app/intel/composer_xe_2013.1.117/mpirt/bin/intel64:/app/intel/composer_xe_2013.1.117/bin/intel64:/app/intel/composer_xe_2013.1.117/bin/intel64_mic:/app/intel/composer_xe_2013.1.117/debugger/gui/intel64:/app/intel/composer_xe_2013.1.117/bin/intel64:/app/intel/composer_xe_2013.1.117/mpirt/bin/intel64:/app/intel/composer_xe_2013.1.117/bin/intel64:/app/intel/composer_xe_2013.1.117/bin/intel64_mic:/app/intel/composer_xe_2013.1.117/debugger/gui/intel64:/usr/local/bin:/bin:/usr/bin:/opt/pbs/default/bin:/opt/pbs/default/sbin:/opt/clustertest/bin:/opt/bin
+unsetenv ADVISOR_XE_2013_DIR
+unsetenv CLASSPATH
+unsetenv CVS_RSH
+unsetenv FPATH
+unsetenv IDB_HOME
+unsetenv INCLUDE
+unsetenv INTEL_LICENSE_FILE
+unsetenv IPPROOT
+unsetenv I_MPI_DAL_PROVIDER
+unsetenv I_MPI_FABRICS
+unsetenv I_MPI_ROOT
+unsetenv LOADEDMODULES
+unsetenv MKLROOT
+unsetenv NETCDFHOME
+unsetenv NETCDFINC
+unsetenv NETCDFLIB
+unsetenv NLSPATH
+unsetenv TBBROOT
+unsetenv VTUNE_AMPLIFIER_XE_2013_DIR
+unsetenv VT_ADD_LIBS
+unsetenv VT_ARCH
+unsetenv VT_LIB_DIR
+unsetenv VT_MPI
+unsetenv VT_ROOT
+unsetenv VT_SLIB_DIR
+unsetenv _LMFILES_
+set _exit=0
+test 0 = 0
+eval `/usr/bin/modulecmd tcsh load netcdf-4.1.2`
+/usr/bin/modulecmd tcsh load netcdf-4.1.2
+setenv CPATH /app/netcdf-4.1.2/include:/app/hdf5-1.8.1/include:/app/intel/composer_xe_2013.1.117/mkl/include:/app/intel/composer_xe_2013.1.117/tbb/include:/app/intel/composer_xe_2013.1.117/mkl/include:/app/intel/composer_xe_2013.1.117/tbb/include
+setenv FPATH /app/netcdf-4.1.2/include:/app/hdf5-1.8.1/include
+setenv LD_LIBRARY_PATH /app/netcdf-4.1.2/lib:/app/hdf5-1.8.1/lib:/app/intel/impi/4.1.0.024/intel64/lib:/app/intel/composer_xe_2013.1.117/tbb/lib/intel64:/app/intel/impi/4.1.0.024/intel64/lib:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/app/intel/composer_xe_2013.1.117/mpirt/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/lib/intel64:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/mkl/lib/intel64:/app/intel/composer_xe_2013.1.117/tbb/lib/intel64:/app/intel/impi/4.1.0.024/intel64/lib:/app/intel/itac/8.1.0.024/intel64/itac/slib_impi4:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/app/intel/composer_xe_2013.1.117/mpirt/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/lib/intel64:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/mkl/lib/intel64:/app/intel/composer_xe_2013.1.117/tbb/lib/intel64:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/app/intel/composer_xe_2013.1.117/mpirt/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/lib/intel64:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/mkl/lib/intel64:/app/intel/composer_xe_2013.1.117/tbb/lib/intel64:/opt/cuda/lib64
+setenv LOADEDMODULES hdf5:netcdf-4.1.2
+setenv NETCDFHOME /app/netcdf-4.1.2
+setenv NETCDFINC /app/netcdf-4.1.2/include
+setenv NETCDFLIB /app/netcdf-4.1.2/lib
+setenv PATH /app/netcdf-4.1.2/bin:/app/hdf5-1.8.1/bin:/app/intel/impi/4.1.0.024/intel64/bin:/app/intel/impi/4.1.0.024/intel64/bin:/usr/lib64/qt-3.3/bin:/app/intel/ics/2013.0.028/bin:/app/intel/impi/4.1.0.024/intel64/bin:/app/intel/itac/8.1.0.024/intel64/bin:/app/intel/composer_xe_2013.1.117/bin/intel64:/app/intel/composer_xe_2013.1.117/mpirt/bin/intel64:/app/intel/composer_xe_2013.1.117/bin/intel64:/app/intel/composer_xe_2013.1.117/bin/intel64_mic:/app/intel/composer_xe_2013.1.117/debugger/gui/intel64:/app/intel/composer_xe_2013.1.117/bin/intel64:/app/intel/composer_xe_2013.1.117/mpirt/bin/intel64:/app/intel/composer_xe_2013.1.117/bin/intel64:/app/intel/composer_xe_2013.1.117/bin/intel64_mic:/app/intel/composer_xe_2013.1.117/debugger/gui/intel64:/usr/local/bin:/bin:/usr/bin:/opt/pbs/default/bin:/opt/pbs/default/sbin:/opt/clustertest/bin:/opt/bin
+setenv _LMFILES_ /app/modules/hdf5:/app/modules/netcdf-4.1.2
+set _exit=0
+test 0 = 0
+eval `/usr/bin/modulecmd tcsh load intel-cluster-studio-2013`
+/usr/bin/modulecmd tcsh load intel-cluster-studio-2013
+setenv ADVISOR_XE_2013_DIR /app/intel/advisor_xe_2013
+setenv CLASSPATH /app/intel/itac/8.1.0.024/intel64/itac/lib_impi4
+setenv CPATH :/app/intel/impi/4.1.0.024/intel64/include:/app/netcdf-4.1.2/include:/app/hdf5-1.8.1/include:/app/intel/composer_xe_2013.1.117/mkl/include:/app/intel/composer_xe_2013.1.117/tbb/include:/app/intel/composer_xe_2013.1.117/mkl/include:/app/intel/composer_xe_2013.1.117/tbb/include
+setenv CVS_RSH ssh
+setenv FPATH /app/intel/composer_xe_2013.1.117/mkl/include:/app/intel/composer_xe_2013.1.117/tbb/include:/app/intel/composer_xe_2013.1.117/mkl/include:/app/intel/composer_xe_2013.1.117/tbb/include::/app/intel/impi/4.1.0.024/intel64/include:/app/netcdf-4.1.2/include:/app/hdf5-1.8.1/include
+setenv IDB_HOME /app/intel/icsxe/2013.0.028/idb/bin/intel64
+setenv INCLUDE /app/intel/composer_xe_2013.1.117/mkl/include:/app/intel/composer_xe_2013.1.117/mkl/include:/app/intel/impi/4.1.0.024/intel64/include
+setenv INTEL_LICENSE_FILE /app/intel/licenses:/opt/intel/licenses:/app/intel/composer_xe_2013.1.117/licenses:/opt/intel/licenses:/root/intel/licenses:/app/intel/composer_xe_2013.1.117/licenses:/opt/intel/licenses:/root/intel/licenses
+setenv IPPROOT /app/intel/composer_xe_2013.1.117/ipp
+setenv I_MPI_DAL_PROVIDER ofa-v2-mlx4_0-1
+setenv I_MPI_FABRICS shm:dapl
+setenv I_MPI_ROOT /app/intel/impi/4.1.0.024
+setenv LD_LIBRARY_PATH /app/intel/:/app/netcdf-4.1.2/lib:/app/hdf5-1.8.1/lib:/app/intel/impi/4.1.0.024/intel64/lib:/app/intel/composer_xe_2013.1.117/tbb/lib/intel64:/app/intel/impi/4.1.0.024/intel64/lib:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/app/intel/composer_xe_2013.1.117/mpirt/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/lib/intel64:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/mkl/lib/intel64:/app/intel/composer_xe_2013.1.117/tbb/lib/intel64:/app/intel/impi/4.1.0.024/intel64/lib:/app/intel/itac/8.1.0.024/intel64/itac/slib_impi4:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/app/intel/composer_xe_2013.1.117/mpirt/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/lib/intel64:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/mkl/lib/intel64:/app/intel/composer_xe_2013.1.117/tbb/lib/intel64:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/app/intel/composer_xe_2013.1.117/mpirt/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/ipp/lib/intel64:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64:/app/intel/composer_xe_2013.1.117/mkl/lib/intel64:/app/intel/composer_xe_2013.1.117/tbb/lib/intel64:/opt/cuda/lib64
+setenv LOADEDMODULES hdf5:netcdf-4.1.2:intel-cluster-studio-2013
+setenv MKLROOT /app/intel/composer_xe_2013.1.117/mkl
+setenv NLSPATH /app/intel/composer_xe_2013.1.117/compiler/lib/intel64/locale/%l_%t/%N:/app/intel/composer_xe_2013.1.117/ipp/lib/intel64/locale/%l_%t/%N:/app/intel/composer_xe_2013.1.117/mkl/lib/intel64/locale/%l_%t/%N:/app/intel/composer_xe_2013.1.117/debugger/intel64/locale/%l_%t/%N:/app/intel/composer_xe_2013.1.117/compiler/lib/intel64/locale/%l_%t/%N:/app/intel/composer_xe_2013.1.117/ipp/lib/intel64/locale/%l_%t/%N:/app/intel/composer_xe_2013.1.117/mkl/lib/intel64/locale/%l_%t/%N:/app/intel/composer_xe_2013.1.117/debugger/intel64/locale/%l_%t/%N
+setenv PATH /opt/cuda/bin:/opt/cuda/C/bin/linux/release:/app/netcdf-4.1.2/bin:/app/hdf5-1.8.1/bin:/app/intel/impi/4.1.0.024/intel64/bin:/app/intel/impi/4.1.0.024/intel64/bin:/usr/lib64/qt-3.3/bin:/app/intel/ics/2013.0.028/bin:/app/intel/impi/4.1.0.024/intel64/bin:/app/intel/itac/8.1.0.024/intel64/bin:/app/intel/composer_xe_2013.1.117/bin/intel64:/app/intel/composer_xe_2013.1.117/mpirt/bin/intel64:/app/intel/composer_xe_2013.1.117/bin/intel64:/app/intel/composer_xe_2013.1.117/bin/intel64_mic:/app/intel/composer_xe_2013.1.117/debugger/gui/intel64:/app/intel/composer_xe_2013.1.117/bin/intel64:/app/intel/composer_xe_2013.1.117/mpirt/bin/intel64:/app/intel/composer_xe_2013.1.117/bin/intel64:/app/intel/composer_xe_2013.1.117/bin/intel64_mic:/app/intel/composer_xe_2013.1.117/debugger/gui/intel64:/usr/local/bin:/bin:/usr/bin:/opt/pbs/default/bin:/opt/pbs/default/sbin:/opt/clustertest/bin:/opt/bin
+setenv TBBROOT /app/intel/composer_xe_2013.1.117/tbb
+setenv VTUNE_AMPLIFIER_XE_2013_DIR /app/intel/vtune_amplifier_xe_2013
+setenv VT_ADD_LIBS -ldwarf -lelf -lvtunwind -lnsl -lm -ldl -lpthread
+setenv VT_ARCH intel64
+setenv VT_LIB_DIR /app/intel/itac/8.1.0.024/intel64/itac/lib_impi4
+setenv VT_MPI impi4
+setenv VT_ROOT /app/intel/itac/8.1.0.024
+setenv VT_SLIB_DIR /app/intel/itac/8.1.0.024/intel64/itac/slib_impi4
+setenv _LMFILES_ /app/modules/hdf5:/app/modules/netcdf-4.1.2:/app/modules/intel-cluster-studio-2013
+set _exit=0
+test 0 = 0
+eval `/usr/bin/modulecmd tcsh list`
+/usr/bin/modulecmd tcsh list
+Currently Loaded Modulefiles:
+  1) hdf5                        3) intel-cluster-studio-2013
+  2) netcdf-4.1.2
+set _exit=0
+test 0 = 0
+set OUTPUT_PATH = /scratch/swathi/mpi_llnl_codes
+set MPPNCCOMBINE = /scratch/swathi/mom4p1_benchmark/bin/ mppnccombine.hpcs_hp
+set NPES = 400
+set WORKDIR = /scratch/swathi/mpi_llnl_codes/tempdir
+set FORT_FILE = heat_eqn_2D_mpi.f90
+cd /scratch/swathi/mpi_llnl_codes/tempdir
+/bin/rm a.out heat_eqn_2D_mpi.f90 heat_types.mod
+set FC = mpiifort -what
+set LD = mpiifort
+set FFLAGS = -I/usr/local/include -I/app/netcdf-4.1.2/include  -fp-model precise -stack_temps -safe_cray_ptr -ftz -i_dynamic -assume byterecl -g -i4  -override_limits  -traceback -check all
+set LDFLAGS = -L/app/netcdf-4.1.2/lib -lnetcdf -lnetcdff -lmpi
+set CFLAGS = -D__IFC
+cp ../heat_eqn_2D_mpi.f90 .
+mpiifort -what -I/usr/local/include -I/app/netcdf-4.1.2/include -fp-model precise -stack_temps -safe_cray_ptr -ftz -i_dynamic -assume byterecl -g -i4 -override_limits -traceback -check all heat_eqn_2D_mpi.f90 -L/app/netcdf-4.1.2/lib -lnetcdf -lnetcdff -lmpi
+
+Error: A license for FCompL is not available (-76,61026,2).
+
+License file(s) used were (in this order):
+    1.  Trusted Storage
+**  2.  /app/intel/licenses
+**  3.  /opt/intel/licenses
+**  4.  /app/intel/composer_xe_2013.1.117/licenses
+**  5.  /root/intel/licenses
+**  6.  /app/intel/composer_xe_2013.1.117/Licenses
+**  7.  /home1/swathi/intel/licenses
+**  8.  /Users/Shared/Library/Application Support/Intel/Licenses
+**  9.  /app/intel/composer_xe_2013.1.117/bin/intel64/*.lic
+
+Please visit http://software.intel.com/sites/support/ if you require technical assistance.
+
+ifort: error #10052: could not checkout FLEXlm license
+exit

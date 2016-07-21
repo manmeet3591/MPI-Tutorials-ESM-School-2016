@@ -1,0 +1,60 @@
+#!/bin/csh -f 
+set echo on
+source /usr/share/modules/init/tcsh
+module purge
+module load intel_xe
+module load impi totalviewd
+module load netcdf-4.1.3
+# 05/10/10..For tutorial purposes..
+cd /lustre/scratch/swathi/mpi_llnl_codes
+
+set OUTPUT_PATH = /lustre/scratch/swathi/mpi_llnl_codes # change this to where you want the output to go
+set MPPNCCOMBINE = "/lustre/scratch/swathi/shallow_water_zhi_nansen/shallow_water/bin/mppnccombine.ice -v" #  
+set NPES = 10 # Try this on more number of PE's
+set WORKDIR = $OUTPUT_PATH/tempdir
+set FORT_FILE = heat_eqn_2D_mpi.f90
+cd $WORKDIR
+/bin/rm * 
+# Change what follows to your system template.
+#
+set  FC       = mpiifort
+set  LD       = mpiifort
+set   FFLAGS =  "-I/usr/local/include -I/lustre/applications/netcdf/netcdf-3.6.3/include  -fltconsistency -stack_temps -safe_cray_ptr -ftz -i_dynamic -assume byterecl -g -i4  -override_limits -w95 -traceback -check all"
+set  LDFLAGS  = "-L/lustre/applications/netcdf/netcdf-3.6.3/lib -lnetcdf -lmpi" 
+set   CFLAGS = -D__IFC
+
+cp ../$FORT_FILE .
+$FC $FFLAGS $FORT_FILE $LDFLAGS 
+
+set BOMB = 0
+
+cat > heat_eqn_nml <<EOF
+&heat_eqn_nml
+ ni = 100,
+ nj = 100,
+ del_t = 1.0e-5,
+ nt_steps = 100,
+ io_int=10,
+ domain_layout=5,2
+/
+EOF
+
+mpiexec -np $NPES  ./a.out > results || set BOMB = 1
+#mpiexec -tv -np $NPES  ./a.out || set BOMB = 1
+#totalview mpirun -a -np $NPES a.out > results || set BOMB = 1
+#mpirun -np $NPES a.out > results || set BOMB = 1
+cp results $OUTPUT_PATH
+
+if ($BOMB == 0) then
+ set diag_list = (`/bin/ls *nc.0000`)    
+ echo "diag_list=" $diag_list
+ foreach file ($diag_list)
+   set file_nam = $file:r
+   $MPPNCCOMBINE  $file_nam
+   mv $file_nam $OUTPUT_PATH
+#   /bin/rm $file_nam* 
+ end
+endif
+
+exit
+

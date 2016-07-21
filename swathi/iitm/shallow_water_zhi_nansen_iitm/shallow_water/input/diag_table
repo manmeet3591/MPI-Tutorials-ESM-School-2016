@@ -1,0 +1,14 @@
+shallow_water
+2004 12 25 0 0 0
+
+#output_files
+"ocean_5min",  5, "minutes", 1, "hours", "time"
+
+
+#output variables
+
+"ocean_model", "u", "u", "ocean_5min", "all",.false.,"none",2
+"ocean_model", "v", "v", "ocean_5min", "all",.false.,"none",2
+"ocean_model", "eta", "eta", "ocean_5min", "all",.false.,"none",2
+
+

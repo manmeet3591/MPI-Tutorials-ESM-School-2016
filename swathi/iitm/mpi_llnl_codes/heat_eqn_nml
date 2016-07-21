@@ -1,0 +1,8 @@
+&heat_eqn_nml
+ ni = 32768,
+ nj = 32768,
+ del_t = 1.0e-10,
+ nt_steps = 150,
+ io_int = 50,
+ domain_layout=15,15
+/

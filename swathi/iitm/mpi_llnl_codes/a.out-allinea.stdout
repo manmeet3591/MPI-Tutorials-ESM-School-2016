@@ -1,0 +1,188 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@iitmc10n45-ib0>
+Subject: Job 518010: </iitm1/cccr/guest9/swathi/iitm/mpi_llnl_codes/a.out-allinea> in cluster <iitmlsfcluster> Exited
+
+Job </iitm1/cccr/guest9/swathi/iitm/mpi_llnl_codes/a.out-allinea> was submitted from host <iitmlogin5-ib0> by user <guest9> in cluster <iitmlsfcluster>.
+Job was executed on host(s) <iitmc10n45-ib0>, in queue <cccr>, as user <guest9> in cluster <iitmlsfcluster>.
+</moes/home/guest9> was used as the home directory.
+</iitm1/cccr/guest9> was used as the working directory.
+Started at Tue Jul 19 19:26:49 2016
+Results reported on Tue Jul 19 19:26:57 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+
+# Name: LSF (OpenMPI)
+#
+# WARNING: If you install a new version of Allinea Forge to the same
+#          directory as this installation, then this file will be overwritten.
+#          If you customize this script at all, please rename it.
+#
+# submit: /gpfs3/allinea/forge/libexec/bsub-submit
+# display: bjobs
+# job regexp: ^Job <(\d+)> .*is submitted
+# cancel: bkill JOB_ID_TAG
+
+# show num_nodes: no
+# 
+# 00:30: {type=text,label="Wall Clock Limit",default="00:30",mask="09:09"}
+# cccr: {type=text,label="Account",global}
+
+## Allinea Forge will generate a submission script by
+## replacing these tags:
+##        TAG NAME         |         DESCRIPTION           |        EXAMPLE
+## ---------------------------------------------------------------------------
+## /iitm1/cccr/guest9/swathi/iitm/mpi_llnl_codes/a.out             | target path and filename      | /users/ned/a.out
+##    | arguments to target program   | -myarg myval
+## 1           | total number of processes     | 16
+## 0           | number of compute nodes       | 8
+## 0      | processes per node            | 2
+##          | OpenMP threads per process    | 4
+## --ddthost iitmlogin5.tropmet.res.in,172.16.138.2,iitmlogin5,10.4.9.103,172.31.138.2,iitmlogin5-ib0,169.254.95.120 --ddtport 4242 --ddtsession 1 --ddtsessionfile /moes/home/guest9/.allinea/session/iitmlogin5.tropmet.res.in-1 --ddtshareddirectory /moes/home/guest9 | arguments to be passed to ddt-debugger
+## /iitm1/cccr/guest9/swathi/iitm/mpi_llnl_codes/a.out              | name of mpirun executable     | mpirun
+##   | mpirun arguments              | -np 4
+##  | extra mpirun arguments        | -x FAST=1
+
+#BSUB -W 00:30
+#BSUB -q cccr
+#BSUB -J /iitm1/cccr/guest9/swathi/iitm/mpi_llnl_codes/a.out-allinea
+#BSUB -o /iitm1/cccr/guest9/swathi/iitm/mpi_llnl_codes/a.out-allinea.stdout
+#BSUB -e /iitm1/cccr/guest9/swathi/iitm/mpi_llnl_codes/a.out-allinea.stderr
+#BSUB -n 1
+
+
+
+## The following line will use exactly the same default settings that
+## Allinea Forge uses to launch without the queue.
+
+/gpfs3/allinea/forge/bin/ddt-mpirun --ddthost iitmlogin5.tropmet.res.in,172.16.138.2,iitmlogin5,10.4.9.103,172.31.138.2,iitmlogin5-ib0,169.254.95.120 --ddtport 4242 --ddtsession 1 --ddtsessionfile /moes/home/guest9/.allinea/session/iitmlogin5.tropmet.res.in-1 --ddtshareddirectory /moes/home/guest9 "/iitm1/cccr/guest9/swathi/iitm/mpi_llnl_codes/a.out" 
+
+
+## Replace the above for more complex situations - such as for passing unusual
+## parameters to mpirun, like machine files or processes per node -- below is 
+
+(... more ...)
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 130.
+
+Resource usage summary:
+
+    CPU time :                                   1.05 sec.
+    Max Memory :                                 94 MB
+    Average Memory :                             45.00 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              7
+    Max Threads :                                10
+    Run time :                                   7 sec.
+    Turnaround time :                            11 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file </iitm1/cccr/guest9/swathi/iitm/mpi_llnl_codes/a.out-allinea.stderr> for stderr output of this job.
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@iitmc31n57-ib0>
+Subject: Job 518090: </iitm1/cccr/guest9/swathi/iitm/mpi_llnl_codes/a.out-allinea> in cluster <iitmlsfcluster> Exited
+
+Job </iitm1/cccr/guest9/swathi/iitm/mpi_llnl_codes/a.out-allinea> was submitted from host <iitmlogin5-ib0> by user <guest9> in cluster <iitmlsfcluster>.
+Job was executed on host(s) <iitmc31n57-ib0>, in queue <cccr>, as user <guest9> in cluster <iitmlsfcluster>.
+</moes/home/guest9> was used as the home directory.
+</iitm1/cccr/guest9> was used as the working directory.
+Started at Tue Jul 19 21:38:08 2016
+Results reported on Tue Jul 19 21:38:28 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+
+# Name: LSF (OpenMPI)
+#
+# WARNING: If you install a new version of Allinea Forge to the same
+#          directory as this installation, then this file will be overwritten.
+#          If you customize this script at all, please rename it.
+#
+# submit: /gpfs3/allinea/forge/libexec/bsub-submit
+# display: bjobs
+# job regexp: ^Job <(\d+)> .*is submitted
+# cancel: bkill JOB_ID_TAG
+
+# show num_nodes: no
+# 
+# 00:30: {type=text,label="Wall Clock Limit",default="00:30",mask="09:09"}
+# cccr: {type=text,label="Account",global}
+
+## Allinea Forge will generate a submission script by
+## replacing these tags:
+##        TAG NAME         |         DESCRIPTION           |        EXAMPLE
+## ---------------------------------------------------------------------------
+## /iitm1/cccr/guest9/swathi/iitm/mpi_llnl_codes/a.out             | target path and filename      | /users/ned/a.out
+##    | arguments to target program   | -myarg myval
+## 1           | total number of processes     | 16
+## 0           | number of compute nodes       | 8
+## 0      | processes per node            | 2
+##          | OpenMP threads per process    | 4
+## --ddthost iitmlogin5.tropmet.res.in,172.16.138.2,iitmlogin5,10.4.9.103,172.31.138.2,iitmlogin5-ib0,169.254.95.120 --ddtport 4242 --ddtsession 1 --ddtsessionfile /moes/home/guest9/.allinea/session/iitmlogin5.tropmet.res.in-1 --ddtshareddirectory /moes/home/guest9 | arguments to be passed to ddt-debugger
+## /iitm1/cccr/guest9/swathi/iitm/mpi_llnl_codes/a.out              | name of mpirun executable     | mpirun
+##   | mpirun arguments              | -np 4
+##  | extra mpirun arguments        | -x FAST=1
+
+#BSUB -W 00:30
+#BSUB -q cccr
+#BSUB -J /iitm1/cccr/guest9/swathi/iitm/mpi_llnl_codes/a.out-allinea
+#BSUB -o /iitm1/cccr/guest9/swathi/iitm/mpi_llnl_codes/a.out-allinea.stdout
+#BSUB -e /iitm1/cccr/guest9/swathi/iitm/mpi_llnl_codes/a.out-allinea.stderr
+#BSUB -n 1
+
+
+
+## The following line will use exactly the same default settings that
+## Allinea Forge uses to launch without the queue.
+
+/gpfs3/allinea/forge/bin/ddt-mpirun --ddthost iitmlogin5.tropmet.res.in,172.16.138.2,iitmlogin5,10.4.9.103,172.31.138.2,iitmlogin5-ib0,169.254.95.120 --ddtport 4242 --ddtsession 1 --ddtsessionfile /moes/home/guest9/.allinea/session/iitmlogin5.tropmet.res.in-1 --ddtshareddirectory /moes/home/guest9 "/iitm1/cccr/guest9/swathi/iitm/mpi_llnl_codes/a.out" 
+
+
+## Replace the above for more complex situations - such as for passing unusual
+## parameters to mpirun, like machine files or processes per node -- below is 
+
+(... more ...)
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 130.
+
+Resource usage summary:
+
+    CPU time :                                   0.13 sec.
+    Max Memory :                                 35 MB
+    Average Memory :                             34.00 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              8
+    Max Threads :                                11
+    Run time :                                   20 sec.
+    Turnaround time :                            21 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file </iitm1/cccr/guest9/swathi/iitm/mpi_llnl_codes/a.out-allinea.stderr> for stderr output of this job.
+

@@ -1,0 +1,13 @@
+ ! NOAA/PMEL TMAP
+ ! FERRET v6.842  
+ ! Linux 2.6.32-279.19.1.el6.x86_64 64-bit - 02/01/13
+ !  9-Mar-16 16:41     
+
+use heat.nc
+show data
+plot temp[i=128,j=128]
+let pi = acos(-1.0)
+list pi
+plot temp[i=128,j=128,l=1:10]
+list temp[i=128,j=128,l=1:10]
+quit

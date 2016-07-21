@@ -1,0 +1,25 @@
+#!/bin/csh -f 
+
+set echo on
+#Change this to your directory
+cd /iitm1/cccr/guest9/swathi/20072016
+
+
+set OUTPUT_PATH = /iitm1/cccr/guest9/swathi/20072016 # change this to where you want the output to go
+set MPPNCCOMBINE = "/iitm1/cccr/guest9/iitm-esm/src/postproc/mppncombine/mppnccombine"
+set WORKDIR = $OUTPUT_PATH/tempdir
+set FORT_FILE = heat_eqn_2D_mpi.f90
+cd $WORKDIR
+/bin/rm * 
+# Change what follows to your system template.
+#
+set  FC       = mpiifort
+set  LD       = mpiifort
+set   FFLAGS =  "-I/usr/local/include -I/gpfs1/home/Libs/INTEL/NETCDF4/netcdf-4.2.1/include  -fp-model precise -stack_temps -safe_cray_ptr -ftz -i_dynamic -assume byterecl -g -i4  -override_limits  -traceback -check all"
+set  LDFLAGS  = "-L/gpfs1/home/Libs/INTEL/NETCDF4/netcdf-4.2.1/lib -lnetcdf -lnetcdff -lmpi" 
+set   CFLAGS = -D__IFC
+
+cp ../$FORT_FILE .
+$FC $FFLAGS $FORT_FILE $LDFLAGS 
+exit
+

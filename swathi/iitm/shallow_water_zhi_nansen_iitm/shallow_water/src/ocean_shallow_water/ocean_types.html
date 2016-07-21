@@ -1,0 +1,193 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=EUC-JP">
+<title>Module ocean_types_mod</title>
+<link type="text/css" href="http://www.gfdl.noaa.gov/~fms/style/doc.css" rel="stylesheet">
+<STYLE TYPE="text/css">
+          .fixed {
+            font-size:medium;
+            font-family:monospace;
+            border-style:none;
+            border-width:0.1em;
+            padding:0.1em;
+            color:#663366;
+          }
+        </STYLE>
+</head>
+<body>
+<a name="TOP"></a><font class="header" size="1"><a href="#PUBLIC INTERFACE">PUBLIC INTERFACE </a>~
+          <a href="#PUBLIC DATA">PUBLIC DATA </a>~
+          <a href="#PUBLIC ROUTINES">PUBLIC ROUTINES </a>~
+          <a href="#NAMELIST">NAMELIST </a>~
+          <a href="#DIAGNOSTIC FIELDS">DIAGNOSTIC FIELDS </a>~
+          <a href="#ERROR MESSAGES">ERROR MESSAGES </a>~
+          <a href="#REFERENCES">REFERENCES </a>~ 
+          <a href="#NOTES">NOTES</a></font>
+<hr>
+<h2>Module ocean_types_mod</h2>
+<a name="HEADER"></a>
+<!-- BEGIN HEADER -->
+<div>
+<b>Contact:&nbsp;</b><a href="mailto:Ronald.Pacanowski@noaa.gov">Ronald Pacanowski </a>,&nbsp;
+    <a href="mailto:Zhi.Liang@noaa.gov">Zhi Liang </a>
+<br>
+<b>Reviewers:&nbsp;</b>
+<br>
+<b>Change History:&nbsp;</b><a href="http://www.gfdl.noaa.gov/fms-cgi-bin/cvsweb.cgi/FMS/ocean/shallow_water">WebCVS Log</a>
+<br>
+<br>
+</div>
+<!-- END HEADER -->
+<a name="OVERVIEW"></a>
+<hr>
+<h4>OVERVIEW</h4>
+<!-- BEGIN OVERVIEW -->
+<p class="text">   This module contains type declarations for ocean model. </p>
+<!-- END OVERVIEW -->
+<a name="DESCRIPTION"></a>
+<!-- BEGIN DESCRIPTION -->
+<div>   This module contains type declarations for ocean model. </div>
+<br>
+<!-- END DESCRIPTION -->
+<a name="OTHER MODULES USED"></a>
+<hr>
+<h4>OTHER MODULES USED</h4>
+<!-- BEGIN OTHER MODULES USED -->
+<div>
+<pre>time_manager_mod</pre>
+</div>
+<!-- END OTHER MODULES USED -->
+<!-- BEGIN PUBLIC INTERFACE -->
+<a name="PUBLIC INTERFACE"></a>
+<hr>
+<h4>PUBLIC INTERFACE</h4>
+<div>
+<dl></dl>
+</div>
+<br>
+<!-- END PUBLIC INTERFACE -->
+<a name="PUBLIC DATA"></a>
+<hr>
+<h4>PUBLIC DATA</h4>
+<!-- BEGIN PUBLIC DATA -->
+<div>None.<br>
+<br>
+</div>
+<!-- END PUBLIC DATA -->
+<a name="PUBLIC ROUTINES"></a>
+<hr>
+<h4>PUBLIC ROUTINES</h4>
+<!-- BEGIN PUBLIC ROUTINES -->
+<ol type="a"></ol>
+<!-- END PUBLIC ROUTINES -->
+<a name="PUBLIC TYPES"></a>
+<!-- BEGIN PUBLIC TYPES -->
+<hr>
+<h4>PUBLIC TYPES</h4>
+<div>
+<table cellspacing="0" CELLPADDING="0" BORDER="0">
+<tr>
+<td>
+<pre>  type ocean_grid_type
+     integer                       :: ni, nj            ! grid size
+     integer                       :: id_xt, id_yt      ! axis ids for fms diag_manager
+     integer                       :: id_xc, id_yc      ! axis ids for fms diag_manager
+     logical                       :: cyclic            ! cyclic boundary condition
+     real                          :: totarea           ! total area of working domain
+     real, dimension(:),   pointer :: xt       =&gt;NULL() ! longitude of the T-cell center in degrees.
+     real, dimension(:),   pointer :: xc       =&gt;NULL() ! longitude of the C-cell center  
+                                                        ! (southwest corner of T-cell) in degrees.
+     real, dimension(:),   pointer :: yt       =&gt;NULL() ! latitude  of the T-cell center in degrees.
+     real, dimension(:),   pointer :: yc       =&gt;NULL() ! latitude  of the C-cell center 
+                                                        ! (southwest corner of T-cell)in degrees.
+     real, dimension(:),   pointer :: cost     =&gt;NULL() ! cosine of T-cell latitude
+     real, dimension(:),   pointer :: cosc     =&gt;NULL() ! cosine of C-cell latitude
+     real, dimension(:,:), pointer :: dxt      =&gt;NULL() ! longitudinal width of T-cells at grid point (m) 
+                                                        ! without multiplying cos(yt)
+     real, dimension(:,:), pointer :: dxc      =&gt;NULL() ! longitudinal width of C-cells at grid point (m) 
+                                                        ! without multiplying cos(yc)
+     real, dimension(:,:), pointer :: dyt      =&gt;NULL() ! latitudinal width of T-cells at grid point (m) 
+     real, dimension(:,:), pointer :: dyc      =&gt;NULL() ! latitudinal width of C-cells at grid point (m) 
+     real, dimension(:,:), pointer :: dxte     =&gt;NULL() ! longitudinal width between grid points at i+1 and i 
+                                                        ! in T-cells (m) without multiplying cos(yt)
+     real, dimension(:,:), pointer :: dytn     =&gt;NULL() ! latitudinal width between grid points at j+1 and j in T-cells (m) 
+     real, dimension(:,:), pointer :: rdxt     =&gt;NULL() ! 1/dxt
+     real, dimension(:,:), pointer :: rdyt     =&gt;NULL() ! 1/dyt
+     real, dimension(:,:), pointer :: rdxc     =&gt;NULL() ! 1/dxc
+     real, dimension(:,:), pointer :: rdyc     =&gt;NULL() ! 1/dyc
+     real, dimension(:,:), pointer :: rcosdxt  =&gt;NULL() ! 1/(dxt*cost)
+     real, dimension(:,:), pointer :: rcosdyt  =&gt;NULL() ! 1/(dyt*cost)
+     real, dimension(:,:), pointer :: rcosdxte =&gt;NULL() ! 1/(dxte*cost)
+     real, dimension(:,:), pointer :: rdytn    =&gt;NULL() ! 1/(dytn)
+     real, dimension(:,:), pointer :: area     =&gt;NULL() ! area of T-cell
+     real, dimension(:),   pointer :: f        =&gt;NULL() ! rotation rate  
+     real, dimension(:),   pointer :: rc8   =&gt;NULL()    ! inverse of ( 8*cosine latitude )
+     real, dimension(:,:), pointer :: ht    =&gt;NULL()    ! depth at T-cell
+     real, dimension(:,:), pointer :: tmask =&gt;NULL()    ! land/sea mask for Tracer
+     real, dimension(:,:), pointer :: umask =&gt;NULL() ! land/sea mask for U (west face center)
+     real, dimension(:,:), pointer :: vmask =&gt;NULL() ! land/sea mask for V (south face center)
+     real, dimension(:,:), pointer :: cmask =&gt;NULL() ! land/sea mask for Z (southwest corner)
+  end type ocean_grid_type</pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre>  type ocean_time_type
+     type(time_type) :: Time_init         ! initial time 
+     type(time_type) :: Model_time        ! model time
+     type(time_type) :: Time_step         ! time step
+     real            :: dt                ! time step in seconds
+     integer         :: itt               ! timestep counter
+     integer         :: taum1, tau, taup1 ! time level indices
+  end type ocean_time_type</pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre>  type ocean_velocity_type
+     real, dimension(:,:,:), pointer :: u =&gt; NULL() ! zonal velocity
+     real, dimension(:,:,:), pointer :: v =&gt; NULL() ! meridinal velocity
+  end type ocean_velocity_type</pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre>  type ocean_freesurf_type
+     real, dimension(:,:,:), pointer :: eta=&gt;NULL() ! surface height on tracer cell center (m) 
+     real, dimension(:,:),   pointer :: ud =&gt;NULL() ! vertically integrated zonal velocity (m^2/s)
+     real, dimension(:,:),   pointer :: vd =&gt;NULL() ! vertically integrated meridinal velocity (m^2/s)
+  end type ocean_freesurf_type</pre>
+</td>
+</tr>
+</table>
+</div>
+<br>
+<!-- END PUBLIC TYPES -->
+<a name="NAMELIST"></a>
+<!-- BEGIN NAMELIST -->
+<!-- END NAMELIST --><a name="DIAGNOSTIC FIELDS"></a>
+<!-- BEGIN DIAGNOSTIC FIELDS -->
+<!-- END DIAGNOSTIC FIELDS --><a name="DATA SETS"></a>
+<!-- BEGIN DATA SETS -->
+<hr>
+<h4>DATA SETS</h4>
+<div>None.<br>
+<br>
+</div>
+<!-- END DATA SETS -->
+<a name="PUBLIC CODE"></a>
+<!-- BEGIN PUBLIC CODE -->
+<!-- END PUBLIC CODE --><a name="ERROR MESSAGES"></a>
+<!-- BEGIN ERROR MESSAGES -->
+<hr>
+<h4>ERROR MESSAGES</h4>
+<div>None.<br>
+<br>
+</div>
+<!-- END ERROR MESSAGES -->
+<hr>
+<div align="right">
+<font size="-1"><a href="#TOP">top</a></font>
+</div>
+</body>
+</html>

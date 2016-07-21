@@ -1,0 +1,47 @@
+#!/bin/csh -f 
+#PBS -V
+#PBS -l walltime=2:00:00
+#PBS -l select=30:ncpus=15:mpiprocs=15
+#PBS -l place=scatter:excl
+#PBS -q workq
+
+set echo on
+# 05/10/10..For tutorial purposes..
+cd /scratch/swathi/mpi_llnl_codes
+source /usr/share/Modules/init/tcsh
+
+
+module load intel-cluster-studio-2013 netcdf-4.1.2 hdf5 
+module list
+
+
+set OUTPUT_PATH = /scratch/swathi/mpi_llnl_codes # change this to where you want the output to go
+set MPPNCCOMBINE = "/scratch/swathi/mom4p1_benchmark/bin/mppnccombine.hpcs_hp" #  
+set WORKDIR = $OUTPUT_PATH/tempdir_map
+set FORT_FILE = heat_eqn_2D_mpi.f90
+cd $WORKDIR
+/bin/rm * 
+# Change what follows to your system template.
+#
+set  FC       = "mpiifort -what"
+set  LD       = mpiifort
+set   FFLAGS =  "-I/usr/local/include -I${NETCDFINC}  -fp-model precise -stack_temps -safe_cray_ptr -ftz -i_dynamic -assume byterecl -g -i4  -override_limits  -traceback -check all -O2"
+set  LDFLAGS  = "-L ${NETCDFLIB}  -lnetcdff -lnetcdf -L /app/hdf5-1.8.1/lib -lhdf5_hl -lhdf5 -lmpi -lz -lcurl" 
+set   CFLAGS = -D__IFC
+
+cp ../$FORT_FILE .
+$FC $FFLAGS $FORT_FILE $LDFLAGS 
+
+cat > heat_eqn_nml <<EOF
+&heat_eqn_nml
+ ni = 1000,
+ nj = 1000,
+ del_t = 1.0e-8,
+ nt_steps = 1000,
+ io_int=50,
+ domain_layout=5,5
+/
+EOF
+
+exit
+

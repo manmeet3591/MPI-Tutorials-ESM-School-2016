@@ -1,0 +1,447 @@
+module ocean_velocity_mod
+  !-----------------------------------------------------------------------
+  !                   GNU General Public License                        
+  !                                                                      
+  ! This program is free software; you can redistribute it and/or modify it and  
+  ! are expected to follow the terms of the GNU General Public License  
+  ! as published by the Free Software Foundation; either version 2 of   
+  ! the License, or (at your option) any later version.                 
+  !                                                                      
+  ! MOM is distributed in the hope that it will be useful, but WITHOUT    
+  ! ANY WARRANTY; without even the implied warranty of MERCHANTABILITY  
+  ! or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public    
+  ! License for more details.                                           
+  !                                                                      
+  ! For the full text of the GNU General Public License,                
+  ! write to: Free Software Foundation, Inc.,                           
+  !           675 Mass Ave, Cambridge, MA 02139, USA.                   
+  ! or see:   http://www.gnu.org/licenses/gpl.html                      
+  !-----------------------------------------------------------------------
+  ! 
+  ! <CONTACT EMAIL= "Ronald.Pacanowski@noaa.gov">Ronald Pacanowski </CONTACT>
+  ! <CONTACT EMAIL= "Zhi.Liang@noaa.gov">Zhi Liang </CONTACT>
+
+  ! <HISTORY SRC="http://www.gfdl.noaa.gov/fms-cgi-bin/cvsweb.cgi/FMS/"/>
+
+  !<OVERVIEW>
+  ! Time step velocity 
+  !</OVERVIEW>
+  !<DESCRIPTION>
+  ! This module steps the velocity field forward in time using a 
+  ! leap-frog time stepping scheme.
+  !</DESCRIPTION>
+
+  use mpp_mod,                 only: mpp_chksum, mpp_error, FATAL, stdout, stdlog
+  use mpp_domains_mod,         only: mpp_get_compute_domain, mpp_get_data_domain, domain2d
+  use mpp_domains_mod,         only: mpp_global_sum, mpp_update_domains
+  use fms_mod,                 only: open_namelist_file, check_nml_error, file_exist
+  use fms_mod,                 only: read_data, write_data, write_version_number, close_file
+  use time_manager_mod,        only: operator( /= )
+  use diag_manager_mod,        only: register_diag_field, send_data
+  use constants_mod,           only: PI, RHO0, GRAV, EPSLN, RADIAN
+  use ocean_types_mod,         only: ocean_grid_type, ocean_velocity_type
+  use ocean_types_mod,         only: ocean_time_type, ocean_freesurf_type
+
+  implicit none
+  private
+
+  public :: ocean_velocity_init, update_ocean_velocity, ocean_velocity_end
+
+  !--- namelist interface ----
+  !<NAMELIST NAME="ocean_velocity_nml">
+  ! <DATA NAME="wind_patch_taux" TYPE="real" DEFAULT="0.0">
+  !  wind stress anomoly in zonal direction.
+  ! </DATA>
+  ! <DATA NAME="wind_patch_tauy" TYPE="real" DEFAULT="0.0">
+  !  wind stress anomoly in merional direction.
+  ! </DATA>
+  ! <DATA NAME="wind_patch_scale" TYPE="real" DEFAULT="1.0">
+  !  gaussian scale of wind stress patch.
+  ! </DATA>
+  ! <DATA NAME="wind_patch_lon" TYPE="real" DEFAULT="0.0">
+  !  center longitude (degrees) of wind stress patch
+  ! </DATA>
+  ! <DATA NAME="wind_patch_lat" TYPE="real" DEFAULT="0.0">
+  !  center latitude (degrees) of wind stress patch
+  ! </DATA>
+  ! <DATA NAME="rayleigh_timescale" TYPE="real" DEFAULT="100.0">
+  !   time scale for rayleigh friction in days 
+  ! </DATA>  
+  ! <DATA NAME="diag_freq" TYPE="integer" DEFAULT="1">
+  !   Number of time steps between which global diagnostics are computed
+  ! </DATA> 
+  ! <DATA NAME="wind_type" TYPE="character(len=40)" DEFAULT="constant_wind">
+  !  type of wind stress. Its value can be "constant_wind"(default),
+  ! "wind_patch" or "frank_bryan_winds".
+  ! </DATA> 
+  !</NAMELIST>
+  real              :: wind_patch_taux    = 0.0
+  real              :: wind_patch_tauy    = 0.0
+  real              :: wind_patch_scale   = 1.0
+  real              :: wind_patch_lon     = 0.0
+  real              :: wind_patch_lat     = 0.0
+  real              :: taux0              = 0.05
+  real              :: tauy0              = 0.0
+  real              :: rayleigh_timescale = 100.0
+  integer           :: diag_freq          = 1
+  character(len=40) :: wind_type          = 'constant_wind'
+
+  namelist /ocean_velocity_nml/ taux0, tauy0,&
+                                wind_patch_taux, wind_patch_tauy, wind_patch_scale, wind_patch_lon, wind_patch_lat,&
+                                rayleigh_timescale, diag_freq, wind_type 
+
+  real,                   parameter :: c2mks = 0.1   ! converts dynes/cm^2 to newton/m^2 
+  real,                   parameter :: secpday = 86400.0
+  type(domain2d),           pointer :: Domain
+  type(ocean_grid_type),    pointer :: Grid
+  type(ocean_time_type),    pointer :: Time
+  real, dimension(:,:), allocatable :: force_x, force_y, z, h, zbaryr8, zbarxr8
+  logical                           :: nonlinear
+  integer                           :: isc, iec, jsc, jec
+  integer                           :: id_u, id_v
+  real                              :: D2R
+  real                              :: ray_coeff
+  logical                           :: module_is_initialized = .FALSE.
+
+  !--- version information variables ----
+  character(len=128) :: version = '$Id: ocean_velocity.f90,v 1.1.2.1.2.4 2005/03/01 15:55:14 z1l Exp $'
+  character(len=128) :: tagname = '$Name:  $'
+
+contains 
+
+  !#####################################################################
+  ! <SUBROUTINE NAME="ocean_velocity_init">
+  !
+  ! <DESCRIPTION>
+  ! Initialize the velocity equation 
+  ! </DESCRIPTION>
+  !
+  subroutine ocean_velocity_init (Domain_in, Grid_in, Time_in, nonlinear_in, Velocity)
+    type(domain2d), target,       intent(in) :: Domain_in
+    type(ocean_grid_type), target,intent(in) :: Grid_in
+    type(ocean_time_type), target,intent(in) :: Time_in
+    logical,                      intent(in) :: nonlinear_in
+    type(ocean_velocity_type), intent(inout) :: Velocity
+                 
+
+    character(len=32) :: filename = 'INPUT/ocean_velocity.res.nc'
+    integer           :: i, j, tau, taum1, taup1, isd, ied, jsd, jed
+    integer           :: ioun, io_status, ierr
+    real              :: temp, radtx, argy, arg, y_lat
+    real, allocatable :: tmpx(:,:), tmpy(:,:), taux(:,:), tauy(:,:)
+
+    if ( module_is_initialized ) then 
+       call mpp_error(FATAL, '==>Error from ocean_velocity_mod (ocean_velocity_init): module already initialized')
+    endif
+
+    module_is_initialized = .TRUE.
+
+    D2R  = PI/180.0
+
+    call write_version_number( version, tagname )
+
+    ! provide for namelist over-ride of defaults 
+    ioun = open_namelist_file()
+    read  (ioun, ocean_velocity_nml,iostat=io_status)
+    write (stdout(),'(/)')
+    write (stdout(), ocean_velocity_nml)  
+    write (stdlog(), ocean_velocity_nml)
+    ierr = check_nml_error(io_status, 'ocean_velocity_nml')
+    call close_file(ioun)
+
+    Domain    => Domain_in
+    Grid      => Grid_in
+    Time      => Time_in
+    nonlinear = nonlinear_in
+
+    taum1     = Time%taum1
+    tau       = Time%tau
+    taup1     = Time%taup1    
+
+    call mpp_get_compute_domain(Domain,isc,iec,jsc,jec)        
+    call mpp_get_data_domain   (Domain,isd,ied,jsd,jed)
+
+    !--- memory allocation
+    allocate(Velocity%u(isd:ied,jsd:jed,3), Velocity%v(isd:ied,jsd:jed,3) )
+    allocate(force_x(isd:ied,jsd:jed), force_y(isd:ied,jsd:jed) )
+    allocate(taux(isd:ied,jsd:jed), tauy(isd:ied,jsd:jed), h(isd:ied,jsd:jed) )
+    allocate(z(isd:ied,jsd:jed), zbaryr8(isc:iec,jsc:jec), zbarxr8(isc:iec,jsc:jec) )
+
+    z       = 0.0
+    zbaryr8 = 0.0 
+    zbarxr8 = 0.0
+    h       = 0.0
+
+    !--- initial condition ---------------------------------------------
+    Velocity%u       = 0.0
+    Velocity%v       = 0.0
+    if(Time%Model_time /= Time%time_init) then 
+       ! --- read restart file if exists, otherwise it will crash.
+       if(file_exist(filename) ) then
+          write(stdout(),*)'==> Note: shallow water model will start from restart conditions.'
+          call read_data(filename,'u',Velocity%u(isc:iec,jsc:jec,tau), Domain,timelevel=1) 
+          call read_data(filename,'u',Velocity%u(isc:iec,jsc:jec,taup1), Domain,timelevel=2) 
+          call read_data(filename,'v',Velocity%v(isc:iec,jsc:jec,tau), Domain,timelevel=1) 
+          call read_data(filename,'v',Velocity%v(isc:iec,jsc:jec,taup1), Domain,timelevel=2)
+          call mpp_update_domains(Velocity%u(:,:,:), Domain)
+          call mpp_update_domains(Velocity%v(:,:,:), Domain)
+       else
+          call mpp_error(FATAL,'==> Error from ocean_velocity_mod: Expected file INPUT/ocean_velocity.res.nc does not exist')
+       endif
+    endif
+
+    do j=jsc, jec
+       do i=isc,iec
+          temp     = Grid%tmask(i,j) + Grid%tmask(i-1,j) + Grid%tmask(i,j-1) + Grid%tmask(i-1,j-1) 
+          z(i,j)   = Grid%f(j)*Grid%cosc(j)*temp/(Grid%ht(i,j)*Grid%cost(j)*Grid%tmask(i,j)&
+                   + Grid%ht(i-1,j)  *Grid%cost(j) *Grid%tmask(i-1,j) &
+                   + Grid%ht(i,j-1)  *Grid%cost(j-1)*Grid%tmask(i,j-1)&
+                   + Grid%ht(i-1,j-1)*Grid%cost(j-1)*Grid%tmask(i-1,j-1) + EPSLN)
+          z(i,j)   = z(i,j) * Grid%cmask(i,j)
+       enddo
+    enddo
+      call mpp_update_domains(z, Domain)
+
+    do j=jsc,jec
+       do i=isc,iec
+          zbaryr8(i,j) = Grid%rc8(j)*(z(i,j) + z(i,j+1))
+          zbarxr8(i,j) = 0.125*(z(i,j) + z(i+1,j))
+       enddo
+    enddo
+
+    !--- boundary condition
+    !    Note: taux(i,j) and tauy(i,j) are defined on the northeast corner of eta-cell(i,j)
+    taux = 0.0
+    tauy = 0.0
+    !--- if wind stress data file exist, read it from the file, otherwise define it.
+    if(file_exist('INPUT/tau.nc') ) then
+       call read_data('INPUT/tau.nc','taux',taux(isc:iec,jsc:jec), Domain)
+       call read_data('INPUT/tau.nc','tauy',tauy(isc:iec,jsc:jec), Domain)
+    else
+       select case(trim(wind_type) )
+       case('constant_wind')
+          do j=jsc, jec
+             do i= isc, iec
+                taux(i,j)    = taux0
+                tauy(i,j)    = tauy0
+             enddo
+          enddo
+       case('wind_patch')
+          radtx = 1.0/(wind_patch_scale**2)
+          do j=jsc, jec
+             argy  = (Grid%yc(j+1) - wind_patch_lat)**2
+             do i= isc, iec
+             arg  = radtx*((Grid%xc(i+1) - wind_patch_lon)**2 + argy)
+                if (arg  > 15.0) arg  = 15.0
+                taux(i,j) = wind_patch_taux*exp(-arg)
+                tauy(i,j) = wind_patch_tauy*exp(-arg)
+             enddo
+          enddo
+       case('frank_bryan_winds')
+          do j=jsc,jec
+             do i=isc,iec
+                y_lat     = abs(Grid%yc(j+1))/RADIAN
+                taux(i,j) = c2mks*(0.8*(-sin(6.0*y_lat)-1.0)+0.5*(tanh(5.0*PI-10.0*y_lat)+tanh(10.0*y_lat)))
+                tauy(i,j) = 0.0 
+             enddo
+          enddo
+       case default
+          call mpp_error(FATAL,'ocean_velocity_mod: '//trim(wind_type)// &
+               ' is not a valid option of nml wind_type ')
+       end select
+    endif
+
+    call mpp_update_domains(taux, Domain)
+    call mpp_update_domains(tauy, Domain)
+
+   !--- regrid taux to u-cell and tauy to v-cell points.
+    allocate(tmpx(isd:ied,jsd:jed), tmpy(isd:ied,jsd:jed) )
+    do j = jsc,jec
+       do i = isc,iec
+          tmpx(i,j) = 0.5*(taux(i-1,j) + taux(i-1,j-1))
+          tmpy(i,j) = 0.5*(tauy(i,j-1) + tauy(i-1,j-1))
+       enddo
+    enddo
+
+    do j = jsc,jec
+       do i = isc,iec
+          taux(i,j) = tmpx(i,j) * Grid%umask(i,j)/(RHO0*max(100., min(Grid%ht(i,j),Grid%ht(i-1,j)))+EPSLN)
+          tauy(i,j) = tmpy(i,j) * Grid%vmask(i,j)/(RHO0*max(100., min(Grid%ht(i,j),Grid%ht(i,j-1)))+EPSLN)
+       enddo
+    enddo
+
+    force_x = taux
+    force_y = tauy
+
+    deallocate(tmpx,tmpy, taux, tauy)
+
+    !--- set rayleigh damping time scales
+    ray_coeff = 1.0/(rayleigh_timescale*secpday)
+
+    !--- register fields for diagnostic output
+    id_u   = register_diag_field ('ocean_model', 'u', (/Grid%id_xc, Grid%id_yt/), &
+                     Time%Model_time, 'zonal current', 'm/sec', missing_value=-999.0, range=(/-999.0,999.0/) )
+    id_v   = register_diag_field ('ocean_model', 'v', (/Grid%id_xt, Grid%id_yc/), &
+                     Time%Model_time, 'meridional current', 'm/sec', missing_value=-999.0, range=(/-999.0,999.0/))
+
+  end subroutine ocean_velocity_init
+  ! </SUBROUTINE> NAME="ocean_velocity_init"
+
+  !#####################################################################
+  ! <SUBROUTINE NAME="update_ocean_velocity">
+  !
+  ! <DESCRIPTION>
+  ! Update velocity components using a leap-frog time scheme.
+  ! </DESCRIPTION>
+  !
+  subroutine update_ocean_velocity(Velocity, Freesurf)
+    type(ocean_velocity_type), intent(inout) :: Velocity
+    type(ocean_freesurf_type),    intent(in) :: Freesurf
+
+    integer :: i, j, taum1, tau, taup1
+    logical :: used
+    real    :: twodt, temp, curl, enk, enp
+    real    :: tmp(isc:iec, jsc:jec)
+
+    twodt = 2.0*Time%dt
+    taum1 = Time%taum1
+    tau   = Time%tau
+    taup1 = Time%taup1
+
+    if (nonlinear) then
+       do j = jsc, jec
+          do i = isc, iec
+             h(i,j) = GRAV*Freesurf%eta(i,j,tau) + 0.25*(Velocity%u(i,j,tau)**2&
+                     + Velocity%u(i+1,j,tau)**2 + Velocity%v(i,j,tau)**2 + Velocity%v(i,j+1,tau)**2)
+          enddo
+       enddo
+    else          
+       do j = jsc, jec
+          do i = isc, iec
+             h(i,j) = GRAV*Freesurf%eta(i,j,tau)
+          enddo
+       enddo
+    endif
+
+    call mpp_update_domains(h, Domain)
+
+    !--- calculate zbary/8, and zbarx/8
+    if (nonlinear) then
+       do j = jsc, jec
+          do i = isc, iec
+             temp = (Grid%tmask(i,j) + Grid%tmask(i-1,j) + Grid%tmask(i,j-1) + Grid%tmask(i-1,j-1) )
+             z(i,j) = temp/((Grid%ht(i,j)+Freesurf%eta(i,j,tau))*Grid%cost(j)*Grid%tmask(i,j)&
+                  + (Grid%ht(i-1,j)+Freesurf%eta(i-1,j,tau))*Grid%cost(j)*Grid%tmask(i-1,j)&
+                  + (Grid%ht(i,j-1)+Freesurf%eta(i,j-1,tau))*Grid%cost(j-1)*Grid%tmask(i,j-1)&
+                  + (Grid%ht(i-1,j-1)+Freesurf%eta(i-1,j-1,tau))*Grid%cost(j-1)*Grid%tmask(i-1,j-1)+ EPSLN)
+             curl   = (Velocity%v(i,j,tau) - Velocity%v(i-1,j,tau))*Grid%rdxc(i,j)&
+                  - (Velocity%u(i,j,tau)*Grid%cost(j) - Velocity%u(i,j-1,tau)*Grid%cost(j-1))*Grid%rdyc(i,j)
+             z(i,j) = z(i,j)*(Grid%f(j)*Grid%cosc(j) + curl)*Grid%cmask(i,j)
+          enddo
+       enddo
+
+       call mpp_update_domains(z, Domain)
+
+       do j = jsc, jec
+          do i = isc, iec
+             zbaryr8(i,j) = Grid%rc8(j)*(z(i,j) + z(i,j+1))
+             zbarxr8(i,j) = 0.125*(z(i,j) + z(i+1,j))
+          enddo
+       enddo
+    endif
+
+    !--- solve u equation (u must be zero on land points)
+    do j = jsc, jec
+       do i = isc, iec
+          Velocity%u(i,j,taup1) = Velocity%u(i,j,taum1) + Grid%umask(i,j)*twodt*( &
+                 force_x(i,j)                                                     &
+               + zbaryr8(i,j)*(Freesurf%vd(i,j) + Freesurf%vd(i,j+1)              &
+               + Freesurf%vd(i-1,j) + Freesurf%vd(i-1,j+1))                       &
+               - (h(i,j) - h(i-1,j))*Grid%rcosdxte(i-1,j)                         &
+               - ray_coeff*Velocity%u(i,j,taum1))
+       enddo
+    enddo
+
+    !--- solve v equation (v must remain zero on land points)
+    do j = jsc, jec
+       do i = isc, iec
+          Velocity%v(i,j,taup1) = Velocity%v(i,j,taum1) + Grid%vmask(i,j)*twodt*( &
+                 force_y(i,j)                                                     &
+               - zbarxr8(i,j)*(Freesurf%ud(i,j) + Freesurf%ud(i+1,j)              &
+               + Freesurf%ud(i,j-1) + Freesurf%ud(i+1,j-1))                       &
+               - (h(i,j) - h(i,j-1))*Grid%rdytn(i,j-1)                            &
+               - ray_coeff*Velocity%v(i,j,taum1))
+       enddo
+    enddo
+
+    call mpp_update_domains(Velocity%u(:,:,taup1), Domain)
+    call mpp_update_domains(Velocity%v(:,:,taup1), Domain)
+
+    !--- send out data
+    if (id_u > 0) used = send_data (id_u, Velocity%u(isc:iec,jsc:jec,taup1), Time%Model_time, rmask=Grid%umask(isc:iec,jsc:jec))
+    if (id_v > 0) used = send_data (id_v, Velocity%v(isc:iec,jsc:jec,taup1), Time%Model_time, rmask=Grid%vmask(isc:iec,jsc:jec))
+
+    !--- diagnostics ( energy integral )
+    if (diag_freq > 0 ) then
+       if(mod(Time%itt,diag_freq) == 0 ) then
+          do j = jsc, jec
+             do i = isc, iec
+                tmp(i,j) = Grid%ht(i,j)*Grid%area(i,j)*(Velocity%u(i,j,taup1)**2 + Velocity%u(i+1,j,taup1)**2 &
+                     + Velocity%v(i,j,taup1)**2 + Velocity%v(i,j+1,taup1)**2)
+             enddo
+          enddo
+          enk = 0.125*rho0*mpp_global_sum(Domain, tmp)/Grid%totarea
+          do j = jsc, jec
+             do i = isc, iec
+                tmp(i,j) = Grid%area(i,j)*Freesurf%eta(i,j,tau)**2
+             enddo
+          enddo
+          enp = 0.5*GRAV*mpp_global_sum(Domain, tmp)/Grid%totarea
+          write(stdout(),*)'Kinectic energy per unit area is  ', enk
+          write(stdout(),*)'Potential energy per unit area is ', enp
+          write(stdout(),*)'Total energy per unit area is     ', enp + enk
+       endif
+    endif
+  end subroutine update_ocean_velocity
+  ! </SUBROUTINE>
+
+  !#####################################################################
+  ! <SUBROUTINE NAME="ocean_velocity_end">
+  !
+  ! <DESCRIPTION>
+  ! Write the velocity field to a restart 
+  ! </DESCRIPTION>
+  subroutine  ocean_velocity_end(Velocity)
+    type(ocean_velocity_type),   intent(inout) :: Velocity        
+
+    character(len=32) :: filename = 'RESTART/ocean_velocity.res.nc'
+    integer           :: tau, taup1
+
+    tau   = Time%tau
+    taup1 = Time%taup1
+
+    call write_data(filename, 'u', Velocity%u(isc:iec,jsc:jec,tau),   domain=Domain)
+    call write_data(filename, 'u', Velocity%u(isc:iec,jsc:jec,taup1), domain=Domain)
+    call write_data(filename, 'v', Velocity%v(isc:iec,jsc:jec,tau),   domain=Domain)
+    call write_data(filename, 'v', Velocity%v(isc:iec,jsc:jec,taup1), domain=Domain)
+
+    write(stdout(),*) 'Ending zonal Velocity chksum (tau) ==>',   &
+          mpp_chksum(Velocity%u(isc:iec,jsc:jec,tau)*Grid%umask(isc:iec,jsc:jec))
+    write(stdout(),*) 'Ending zonal Velocity chksum (taup1) ==>', &
+          mpp_chksum(Velocity%u(isc:iec,jsc:jec,taup1)*Grid%umask(isc:iec,jsc:jec))
+    write(stdout(),*) 'Ending merid Velocity chksum (tau) ==>',   &
+          mpp_chksum(Velocity%v(isc:iec,jsc:jec,tau)*Grid%vmask(isc:iec,jsc:jec))
+    write(stdout(),*) 'Ending merid Velocity chksum (taup1) ==>', &
+          mpp_chksum(Velocity%v(isc:iec,jsc:jec,taup1)*Grid%vmask(isc:iec,jsc:jec))
+
+    !--- deallocate memory
+    deallocate(Velocity%u, Velocity%v, force_x, force_y, h, z )
+
+    module_is_initialized = .false.
+
+
+  end subroutine  ocean_velocity_end
+  ! </SUBROUTINE>
+  !#####################################################################
+
+end module ocean_velocity_mod

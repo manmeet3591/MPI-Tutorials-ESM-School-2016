@@ -1,0 +1,117 @@
+cd /iitm1/cccr/guest9/swathi/iitm/for_iitm
+set OUTPUT_PATH = /iitm1/cccr/guest9/swathi/iitm/for_iitm
+set WORKDIR = /iitm1/cccr/guest9/swathi/iitm/for_iitm/tempdir_debug_swm_new
+set FMS_UTILS = /iitm1/cccr/guest9/swathi/iitm/for_iitm/shallow_water_zhi_nansen/shallow_water/src/shared
+set FMS_UTILITIES = /iitm1/cccr/guest9/swathi/iitm/for_iitm/shallow_water_zhi_nansen/shallow_water/src/shared/platform /iitm1/cccr/guest9/swathi/iitm/for_iitm/shallow_water_zhi_nansen/shallow_water/src/shared/constants /iitm1/cccr/guest9/swathi/iitm/for_iitm/shallow_water_zhi_nansen/shallow_water/src/shared/fms /iitm1/cccr/guest9/swathi/iitm/for_iitm/shallow_water_zhi_nansen/shallow_water/src/shared/time_manager /iitm1/cccr/guest9/swathi/iitm/for_iitm/shallow_water_zhi_nansen/shallow_water/src/shared/mpp /iitm1/cccr/guest9/swathi/iitm/for_iitm/shallow_water_zhi_nansen/shallow_water/src/shared/diag_manager  /iitm1/cccr/guest9/swathi/iitm/for_iitm/shallow_water_zhi_nansen/shallow_water/src/shared/memutils
+set MKMF = /iitm1/cccr/guest9/iitm-esm/src/mom4p1/bin/mkmf
+set FORT_FILE = heat_eqn_swm_mpp.F90
+cd /iitm1/cccr/guest9/swathi/iitm/for_iitm/tempdir_debug_swm_new
+/bin/rm heat_eqn_swm_mpp.F90 Makefile template
+cat
+cp ../heat_eqn_swm_mpp.F90 .
+/iitm1/cccr/guest9/iitm-esm/src/mom4p1/bin/mkmf -m Makefile -p a.out -t template -x heat_eqn_swm_mpp.F90 /iitm1/cccr/guest9/swathi/iitm/for_iitm/shallow_water_zhi_nansen/shallow_water/src/shared/platform /iitm1/cccr/guest9/swathi/iitm/for_iitm/shallow_water_zhi_nansen/shallow_water/src/shared/constants /iitm1/cccr/guest9/swathi/iitm/for_iitm/shallow_water_zhi_nansen/shallow_water/src/shared/fms /iitm1/cccr/guest9/swathi/iitm/for_iitm/shallow_water_zhi_nansen/shallow_water/src/shared/time_manager /iitm1/cccr/guest9/swathi/iitm/for_iitm/shallow_water_zhi_nansen/shallow_water/src/shared/mpp /iitm1/cccr/guest9/swathi/iitm/for_iitm/shallow_water_zhi_nansen/shallow_water/src/shared/diag_manager /iitm1/cccr/guest9/swathi/iitm/for_iitm/shallow_water_zhi_nansen/shallow_water/src/shared/memutils /iitm1/cccr/guest9/swathi/iitm/for_iitm/shallow_water_zhi_nansen/shallow_water/src/shared/mpp/include
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+	LANGUAGE = (unset),
+	LC_ALL = (unset),
+	LC_CTYPE = "UTF-8",
+	LANG = "en_US.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to the standard locale ("C").
+........... Makefile is ready.
+mpiifort   -I/usr/local/include -I/gpfs1/home/Libs/INTEL/NETCDF4/netcdf-4.2.1/include -Duse_libMPI -Duse_netCDF -fltconsistency -stack_temps -safe_cray_ptr -ftz -i_dynamic -assume byterecl -g -O0 -i4 -r8 -override_limits -w95 -traceback  -c	./heat_eqn_swm_mpp.F90
+ifort: command line remark #10010: option '-w95' is deprecated and will be removed in a future release. See '-help deprecated'
+heat_eqn_swm_mpp.F90(5): error #7002: Error in opening the compiled module file.  Check INCLUDE paths.   [MPP_MOD]
+        use mpp_mod
+------------^
+heat_eqn_swm_mpp.F90(6): error #7002: Error in opening the compiled module file.  Check INCLUDE paths.   [MPP_DOMAINS_MOD]
+        use mpp_domains_mod
+------------^
+heat_eqn_swm_mpp.F90(7): error #7002: Error in opening the compiled module file.  Check INCLUDE paths.   [MPP_IO_MOD]
+        use mpp_io_mod
+------------^
+heat_eqn_swm_mpp.F90(23): error #6457: This derived type name has not been declared.   [DOMAIN2D]
+	type(domain2D),  allocatable, dimension(:), target :: local_domains  ! domains with halos for all processors
+-------------^
+heat_eqn_swm_mpp.F90(24): error #6457: This derived type name has not been declared.   [DOMAIN2D]
+	type(domain2D),  pointer                           :: local_domain   ! domain with halos on this processor
+-------------^
+heat_eqn_swm_mpp.F90(25): error #6457: This derived type name has not been declared.   [DOMAIN2D]
+	type(domain2D) :: domain
+-------------^
+heat_eqn_swm_mpp.F90(27): error #6457: This derived type name has not been declared.   [DOMAIN1D]
+	type(domain1D) :: xdom,ydom
+-------------^
+heat_eqn_swm_mpp.F90(28): error #6457: This derived type name has not been declared.   [AXISTYPE]
+        type(axistype) :: x,y, t 
+-------------^
+heat_eqn_swm_mpp.F90(29): error #6457: This derived type name has not been declared.   [FIELDTYPE]
+        type(fieldtype) :: f
+-------------^
+heat_eqn_swm_mpp.F90(35): error #6404: This name does not have a type, and must have an explicit type.   [MPP_NPES]
+	npes = mpp_npes()
+---------------^
+heat_eqn_swm_mpp.F90(36): error #6404: This name does not have a type, and must have an explicit type.   [MPP_PE]
+	pe = mpp_pe()
+-------------^
+heat_eqn_swm_mpp.F90(40): error #6632: Keyword arguments are invalid without an explicit interface.   [ACTION]
+	call mpp_open(ioun,'heat_eqn_nml',action=MPP_RDONLY,form=MPP_ASCII)
+------------------------------------------^
+heat_eqn_swm_mpp.F90(40): error #6404: This name does not have a type, and must have an explicit type.   [MPP_RDONLY]
+	call mpp_open(ioun,'heat_eqn_nml',action=MPP_RDONLY,form=MPP_ASCII)
+-------------------------------------------------^
+heat_eqn_swm_mpp.F90(40): error #6632: Keyword arguments are invalid without an explicit interface.   [FORM]
+	call mpp_open(ioun,'heat_eqn_nml',action=MPP_RDONLY,form=MPP_ASCII)
+------------------------------------------------------------^
+heat_eqn_swm_mpp.F90(40): error #6404: This name does not have a type, and must have an explicit type.   [MPP_ASCII]
+	call mpp_open(ioun,'heat_eqn_nml',action=MPP_RDONLY,form=MPP_ASCII)
+-----------------------------------------------------------------^
+heat_eqn_swm_mpp.F90(42): error #6404: This name does not have a type, and must have an explicit type.   [STDOUT]
+	write(stdout(),heat_eqn_nml)
+--------------^
+heat_eqn_swm_mpp.F90(46): error #6404: This name does not have a type, and must have an explicit type.   [FATAL]
+	  call mpp_error(FATAL,'=>Error one of the above is <= 0')
+-------------------------^
+heat_eqn_swm_mpp.F90(67): error #6404: This name does not have a type, and must have an explicit type.   [LOCAL_DOMAINS]
+	allocate (local_domains(0:npes-1))
+------------------^
+heat_eqn_swm_mpp.F90(68): error #6404: This name does not have a type, and must have an explicit type.   [LOCAL_DOMAIN]
+	local_domain => local_domains(pe)
+--------^
+heat_eqn_swm_mpp.F90(68): error #6678: When the target is an expression it must deliver a pointer result.   [LOCAL_DOMAINS]
+	local_domain => local_domains(pe)
+------------------------^
+heat_eqn_swm_mpp.F90(75): error #6632: Keyword arguments are invalid without an explicit interface.   [XHALO]
+		xhalo=halo, yhalo=halo )
+----------------^
+heat_eqn_swm_mpp.F90(75): error #6632: Keyword arguments are invalid without an explicit interface.   [YHALO]
+		xhalo=halo, yhalo=halo )
+----------------------------^
+heat_eqn_swm_mpp.F90(78): error #6404: This name does not have a type, and must have an explicit type.   [XDOM]
+	call mpp_get_domain_components( local_domains(pe), xdom, ydom )
+-----------------------------------------------------------^
+heat_eqn_swm_mpp.F90(78): error #6404: This name does not have a type, and must have an explicit type.   [YDOM]
+	call mpp_get_domain_components( local_domains(pe), xdom, ydom )
+-----------------------------------------------------------------^
+heat_eqn_swm_mpp.F90(82): error #6632: Keyword arguments are invalid without an explicit interface.   [ACTION]
+  	call mpp_open( unit, 'heat_gen_output', action=MPP_OVERWR, form=MPP_NETCDF, threading=MPP_MULTI, fileset=MPP_MULTI )
+------------------------------------------------^
+heat_eqn_swm_mpp.F90(82): error #6404: This name does not have a type, and must have an explicit type.   [MPP_OVERWR]
+  	call mpp_open( unit, 'heat_gen_output', action=MPP_OVERWR, form=MPP_NETCDF, threading=MPP_MULTI, fileset=MPP_MULTI )
+-------------------------------------------------------^
+heat_eqn_swm_mpp.F90(82): error #6632: Keyword arguments are invalid without an explicit interface.   [FORM]
+  	call mpp_open( unit, 'heat_gen_output', action=MPP_OVERWR, form=MPP_NETCDF, threading=MPP_MULTI, fileset=MPP_MULTI )
+-------------------------------------------------------------------^
+heat_eqn_swm_mpp.F90(82): error #6404: This name does not have a type, and must have an explicit type.   [MPP_NETCDF]
+  	call mpp_open( unit, 'heat_gen_output', action=MPP_OVERWR, form=MPP_NETCDF, threading=MPP_MULTI, fileset=MPP_MULTI )
+------------------------------------------------------------------------^
+heat_eqn_swm_mpp.F90(82): error #6632: Keyword arguments are invalid without an explicit interface.   [THREADING]
+  	call mpp_open( unit, 'heat_gen_output', action=MPP_OVERWR, form=MPP_NETCDF, threading=MPP_MULTI, fileset=MPP_MULTI )
+------------------------------------------------------------------------------------^
+heat_eqn_swm_mpp.F90(82): error #6404: This name does not have a type, and must have an explicit type.   [MPP_MULTI]
+  	call mpp_open( unit, 'heat_gen_output', action=MPP_OVERWR, form=MPP_NETCDF, threading=MPP_MULTI, fileset=MPP_MULTI )
+----------------------------------------------------------------------------------------------^
+/tmp/ifort3f3oEh.i90(1849): catastrophic error: Too many errors, exiting
+compilation aborted for ./heat_eqn_swm_mpp.F90 (code 1)
+make: *** [heat_eqn_swm_mpp.o] Error 1
+exit

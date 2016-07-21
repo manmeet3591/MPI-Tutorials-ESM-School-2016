@@ -1,0 +1,24 @@
+#! /bin/csh -f
+set echo on
+# 05/10/10..For tutorial purposes..
+cd /lustre/scratch/swathi/mpi_llnl_codes
+
+set OUTPUT_PATH = /lustre/scratch/swathi/mpi_llnl_codes # change this to where you want the output to go
+set MPPNCCOMBINE = "/lustre/scratch/swathi/shallow_water_zhi_nansen/shallow_water/bin/mppnccombine.ice -v" #  
+set FORT_FILE = heat_eqn_1D_mpi.f90
+set WORKDIR = $OUTPUT_PATH/tempdir
+cd $WORKDIR
+/bin/rm * 
+# Change what follows to your system template.
+#
+set  FC       = "ifort -what"
+set  LD       = ifort
+set   FFLAGS =  "-I/usr/local/include -I/lustre/applications/netcdf/netcdf-3.6.3/include -Duse_libMPI -Duse_netCDF -fp-model precise  -stack_temps -safe_cray_ptr -ftz -i_dynamic -assume byterecl  -O2 -i4  -override_limits -w95 -traceback"
+set  LDFLAGS  = "-L/lustre/applications/netcdf/netcdf-3.6.3/lib -lnetcdf -lmpi" 
+set   CFLAGS = -D__IFC
+
+cp ../$FORT_FILE .
+$FC $FFLAGS $FORT_FILE $LDFLAGS 
+
+exit
+

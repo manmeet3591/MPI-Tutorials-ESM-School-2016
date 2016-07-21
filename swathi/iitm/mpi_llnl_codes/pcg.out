@@ -1,0 +1,97 @@
+ 
+  Conjugate Gradient preconditioned with Jacobi matrix
+  Section 4.5, Kincaid-Cheney
+ 
+  The residual vector corresponding to x(0) is:
+    0.875000E+03   0.539000E+03   0.399000E+03   0.319000E+03
+ 
+  At iteration           1
+  Solution is:
+    0.582851E+00   0.107711E+01   0.132890E+01   0.148744E+01
+  Residual vector is:
+    0.617824E+02   0.132660E+01  -0.114439E+02  -0.149459E+02
+ 
+  At iteration           2
+  Solution is:
+    0.967725E+00   0.112008E+01   0.100512E+01   0.878963E+00
+  Residual vector is:
+    0.330517E+00  -0.404138E+00  -0.475607E-01   0.205826E+00
+ 
+  At iteration           3
+  Solution is:
+    0.999338E+00   0.100746E+01   0.982271E+00   0.101151E+01
+  Residual vector is:
+   -0.154501E-01  -0.108689E-01  -0.721236E-02  -0.679323E-02
+ 
+  At iteration           4
+  Solution is:
+    0.999328E+00   0.100744E+01   0.982247E+00   0.101148E+01
+  Residual vector is:
+    0.140715E-03  -0.465930E-03   0.755479E-03  -0.299153E-03
+ 
+  At iteration           5
+  Solution is:
+    0.999582E+00   0.100305E+01   0.992807E+00   0.100495E+01
+  Residual vector is:
+    0.232029E-01   0.860875E-03  -0.355713E-02  -0.543202E-02
+ 
+  At iteration           6
+  Solution is:
+    0.999998E+00   0.100002E+01   0.999970E+00   0.100002E+01
+  Residual vector is:
+    0.618771E-05   0.335247E-05   0.262307E-05   0.227196E-05
+ 
+  At iteration           7
+  Solution is:
+    0.999998E+00   0.100002E+01   0.999970E+00   0.100002E+01
+  Residual vector is:
+    0.692972E-06  -0.272088E-06  -0.143377E-06   0.207031E-07
+ 
+  At iteration           8
+  Solution is:
+    0.999998E+00   0.100002E+01   0.999970E+00   0.100002E+01
+  Residual vector is:
+   -0.308204E-06  -0.258228E-06   0.457006E-07   0.245509E-06
+ 
+  At iteration           9
+  Solution is:
+    0.999998E+00   0.100001E+01   0.999970E+00   0.100002E+01
+  Residual vector is:
+   -0.222238E-08   0.779775E-08  -0.997437E-08   0.448750E-08
+ 
+  At iteration          10
+  Solution is:
+    0.999998E+00   0.100001E+01   0.999970E+00   0.100002E+01
+  Residual vector is:
+   -0.508684E-06  -0.350886E-06  -0.284808E-06  -0.226746E-06
+ 
+  At iteration          11
+  Solution is:
+    0.999998E+00   0.100002E+01   0.999969E+00   0.100002E+01
+  Residual vector is:
+    0.704751E-07   0.404492E-08  -0.110681E-07  -0.153395E-07
+ 
+  At iteration          12
+  Solution is:
+    0.999998E+00   0.100002E+01   0.999969E+00   0.100002E+01
+  Residual vector is:
+   -0.136779E-10  -0.102318E-10  -0.768807E-11  -0.638423E-11
+ 
+  At iteration          13
+  Solution is:
+    0.999998E+00   0.100002E+01   0.999969E+00   0.100002E+01
+  Residual vector is:
+    0.114482E-11  -0.271598E-12  -0.344039E-13  -0.134255E-12
+ 
+  At iteration          14
+  Solution is:
+    0.999998E+00   0.100002E+01   0.999969E+00   0.100002E+01
+  Residual vector is:
+   -0.107665E-12  -0.323519E-12   0.155796E-12   0.120813E-12
+ 
+  At iteration          15
+  Solution is:
+    0.999998E+00   0.100002E+01   0.999969E+00   0.100002E+01
+  Residual vector is:
+   -0.276585E-13   0.402939E-13   0.156028E-12  -0.100971E-12
+ 

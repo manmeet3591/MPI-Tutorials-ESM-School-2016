@@ -1,0 +1,28 @@
+How to compile and run FMS shallow-water code; P. S. Swathi 8/1/10
+The script to use is 
+shallow_water_zhi_nansen/shallow_water/scripts/run_shallow_water_model_tsunami_altix_linear
+
+For my shorthand notation I will use expdir =  shallow_water_zhi_nansen/shallow_water/
+
+Before you use this do the following:
+
+1. Go to $expdir/bin see if you have a mkmf template which corresponds to your system.
+If not create one using mkmf.template.ia64 as a sample. Make sure you put the right
+includes (-I) to have netcdf include files. The linker (LDFLAGS) should point to
+netcdf and mpi libraries. If you are running on a single processor, you will not
+need the mpi library. 
+
+The mkmf template  you create will have a final extension of platform_name 
+which you will use as follows in the runscript.
+
+set platform = platform_name 
+
+
+2. If you are running on a single processor,
+
+set npes = 1
+
+3. Run the script and the results will go to $workdir.
+
+
+Good luck

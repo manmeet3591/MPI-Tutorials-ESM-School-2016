@@ -1,0 +1,11 @@
+ ! NOAA/PMEL TMAP
+ ! FERRET v6.67  
+ ! Linux(gfortran) 2.6.18-238.1.1.el5 - 02/11/11
+ ! 14-Jul-16 14:53     
+
+use heat_gen_output.nc
+show data
+shad tmep[l=1]
+shad temp[l=1]
+shad temp[l=500]
+quit

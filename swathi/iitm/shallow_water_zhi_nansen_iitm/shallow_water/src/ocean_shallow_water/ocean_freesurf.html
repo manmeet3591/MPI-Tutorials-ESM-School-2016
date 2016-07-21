@@ -1,0 +1,223 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=EUC-JP">
+<title>Module ocean_freesurf_mod</title>
+<link type="text/css" href="http://www.gfdl.noaa.gov/~fms/style/doc.css" rel="stylesheet">
+<STYLE TYPE="text/css">
+          .fixed {
+            font-size:medium;
+            font-family:monospace;
+            border-style:none;
+            border-width:0.1em;
+            padding:0.1em;
+            color:#663366;
+          }
+        </STYLE>
+</head>
+<body>
+<a name="TOP"></a><font class="header" size="1"><a href="#PUBLIC INTERFACE">PUBLIC INTERFACE </a>~
+          <a href="#PUBLIC DATA">PUBLIC DATA </a>~
+          <a href="#PUBLIC ROUTINES">PUBLIC ROUTINES </a>~
+          <a href="#NAMELIST">NAMELIST </a>~
+          <a href="#DIAGNOSTIC FIELDS">DIAGNOSTIC FIELDS </a>~
+          <a href="#ERROR MESSAGES">ERROR MESSAGES </a>~
+          <a href="#REFERENCES">REFERENCES </a>~ 
+          <a href="#NOTES">NOTES</a></font>
+<hr>
+<h2>Module ocean_freesurf_mod</h2>
+<a name="HEADER"></a>
+<!-- BEGIN HEADER -->
+<div>
+<b>Contact:&nbsp;</b><a href="mailto:Ronald.Pacanowski@noaa.gov">Ronald Pacanowski </a>,&nbsp;
+    <a href="mailto:Zhi.Liang@noaa.gov">Zhi Liang </a>
+<br>
+<b>Reviewers:&nbsp;</b>
+<br>
+<b>Change History:&nbsp;</b><a href="http://www.gfdl.noaa.gov/fms-cgi-bin/cvsweb.cgi/FMS/ocean/shallow_water">WebCVS Log</a>
+<br>
+<br>
+</div>
+<!-- END HEADER -->
+<a name="OVERVIEW"></a>
+<hr>
+<h4>OVERVIEW</h4>
+<!-- BEGIN OVERVIEW -->
+<p class="text"> 
+</p>
+<!-- END OVERVIEW -->
+<a name="DESCRIPTION"></a>
+<!-- BEGIN DESCRIPTION -->
+<div>   This module steps free surface height forward in time using a 
+   leap-frog time stepping scheme. </div>
+<br>
+<!-- END DESCRIPTION -->
+<a name="OTHER MODULES USED"></a>
+<hr>
+<h4>OTHER MODULES USED</h4>
+<!-- BEGIN OTHER MODULES USED -->
+<div>
+<pre>               mpp_mod<br>       mpp_domains_mod<br>               fms_mod<br>      time_manager_mod<br>      diag_manager_mod<br>       ocean_types_mod<br>ocean_horz_diffuse_mod</pre>
+</div>
+<!-- END OTHER MODULES USED -->
+<!-- BEGIN PUBLIC INTERFACE -->
+<a name="PUBLIC INTERFACE"></a>
+<hr>
+<h4>PUBLIC INTERFACE</h4>
+<div>
+<dl>
+<dt>
+<a href="#ocean_freesurf_init">ocean_freesurf_init</a>:</dt>
+<dd></dd>
+<dt>
+<a href="#update_ocean_freesurf">update_ocean_freesurf</a>:</dt>
+<dd></dd>
+<dt>
+<a href="#ocean_freesurf_end">ocean_freesurf_end</a>:</dt>
+<dd></dd>
+</dl>
+</div>
+<br>
+<!-- END PUBLIC INTERFACE -->
+<a name="PUBLIC DATA"></a>
+<hr>
+<h4>PUBLIC DATA</h4>
+<!-- BEGIN PUBLIC DATA -->
+<div>None.<br>
+<br>
+</div>
+<!-- END PUBLIC DATA -->
+<a name="PUBLIC ROUTINES"></a>
+<hr>
+<h4>PUBLIC ROUTINES</h4>
+<!-- BEGIN PUBLIC ROUTINES -->
+<ol type="a">
+<li>
+<a name="ocean_freesurf_init"></a>
+<h4>ocean_freesurf_init</h4>
+<dl>
+<dt>
+<b>DESCRIPTION</b>
+</dt>
+<dd>   Initialization routine </dd>
+<br>
+<br>
+</dl>
+</li>
+<li>
+<a name="update_ocean_freesurf"></a>
+<h4>update_ocean_freesurf</h4>
+<dl>
+<dt>
+<b>DESCRIPTION</b>
+</dt>
+<dd>   Time step the freesurf fields using a leap-frog scheme. </dd>
+<br>
+<br>
+</dl>
+</li>
+<li>
+<a name="ocean_freesurf_end"></a>
+<h4>ocean_freesurf_end</h4>
+<dl>
+<dt>
+<b>DESCRIPTION</b>
+</dt>
+<dd>   Write ocean freesurf restart file. </dd>
+<br>
+<br>
+</dl>
+</li>
+</ol>
+<!-- END PUBLIC ROUTINES -->
+<a name="PUBLIC TYPES"></a>
+<!-- BEGIN PUBLIC TYPES -->
+<!-- END PUBLIC TYPES --><a name="NAMELIST"></a>
+<!-- BEGIN NAMELIST -->
+<hr>
+<h4>NAMELIST</h4>
+<div>
+<b>&amp;ocean_freesurf_nml</b>
+<br>
+<br>
+<div>
+<dl>
+<dt>
+<tt>anomoly_amplitude</tt>
+</dt>
+<dl>   free surface height anomoly (meter). <br>
+<span class="type">[real, default: 0.2]</span>
+</dl>
+<dt>
+<tt>anomoly_longitude</tt>
+</dt>
+<dl>   longitude (degrees) of free surface height anomoly center. <br>
+<span class="type">[real, default: 10.0]</span>
+</dl>
+<dt>
+<tt>anomoly_latitude</tt>
+</dt>
+<dl>   latitude (degrees) of free surface height anomoly center. <br>
+<span class="type">[real, default: 0.0]</span>
+</dl>
+<dt>
+<tt>holding_time</tt>
+</dt>
+<dl>   time (days) to maintain the initial free elevation
+   after which it is allowed to evolve. <br>
+<span class="type">[real, default: 0.0]</span>
+</dl>
+<dt>
+<tt>anomoly_scale</tt>
+</dt>
+<dl>   lateral gaussian scale (degrees) for free surface height anomoly <br>
+<span class="type">[real, default: 1.0]</span>
+</dl>
+<dt>
+<tt>newtonian_timescale</tt>
+</dt>
+<dl>   time scale (days) for newtonian damping of free surface elevation to zero <br>
+<span class="type">[real, default: 100.0]</span>
+</dl>
+<dt>
+<tt>horz_diffuse_on</tt>
+</dt>
+<dl>   Set true to add lateral diffusion. <br>
+<span class="type">[logical, default: FALSE]</span>
+</dl>
+<dt>
+<tt>freshwater_flux_on</tt>
+</dt>
+<dl>   Set true to add a fresh water flux (m/s). <br>
+<span class="type">[logical, default: FALSE]</span>
+</dl>
+</dl>
+</div>
+</div>
+<br>
+<!-- END NAMELIST -->
+<a name="DIAGNOSTIC FIELDS"></a>
+<!-- BEGIN DIAGNOSTIC FIELDS -->
+<!-- END DIAGNOSTIC FIELDS --><a name="DATA SETS"></a>
+<!-- BEGIN DATA SETS -->
+<hr>
+<h4>DATA SETS</h4>
+<div>None.<br>
+<br>
+</div>
+<!-- END DATA SETS -->
+<a name="PUBLIC CODE"></a>
+<!-- BEGIN PUBLIC CODE -->
+<!-- END PUBLIC CODE --><a name="ERROR MESSAGES"></a>
+<!-- BEGIN ERROR MESSAGES -->
+<hr>
+<h4>ERROR MESSAGES</h4>
+<div>None.<br>
+<br>
+</div>
+<!-- END ERROR MESSAGES -->
+<hr>
+<div align="right">
+<font size="-1"><a href="#TOP">top</a></font>
+</div>
+</body>
+</html>

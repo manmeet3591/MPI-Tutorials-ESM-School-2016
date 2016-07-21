@@ -1,0 +1,31 @@
+#! /bin/csh -f
+set echo on
+cd /iitm1/cccr/guest9/swathi/21072016
+
+set OUTPUT_PATH = /iitm1/cccr/guest9/swathi/21072016 # change this to where you want the output to go
+set MPPNCCOMBINE = /iitm1/cccr/guest9/iitm-esm/src/postproc/mppnccombine/mppnccombine #  
+set NPES = 9 # Try this on more number of PE's
+set WORKDIR = $OUTPUT_PATH/tempdir_debug_swm_new
+cd $WORKDIR
+/bin/rm *.nc *nc.* 
+
+set BOMB = 0
+cp ../heat_eqn_nml .
+
+mpirun   -np $NPES ./a.out > results || set BOMB = 1
+#ddt
+cp results $OUTPUT_PATH
+
+if ($BOMB == 0) then
+ set diag_list = (`/bin/ls *.nc.0000`)    
+ echo "diag_list=" $diag_list
+ foreach file ($diag_list)
+   set file_nam = $file:r
+   $MPPNCCOMBINE  $file_nam
+   mv $file_nam $OUTPUT_PATH
+   /bin/rm $file_nam* 
+ end
+endif
+
+exit
+

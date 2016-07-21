@@ -1,0 +1,35 @@
+#! /bin/csh -f
+set echo on
+# 05/10/10..For tutorial purposes..
+cd /lustre/scratch/swathi/mpi_llnl_codes
+
+set OUTPUT_PATH = /lustre/scratch/swathi/mpi_llnl_codes # change this to where you want the output to go
+set MPPNCCOMBINE = "/lustre/scratch/swathi/shallow_water_zhi_nansen/shallow_water/bin/mppnccombine.ice -v" #  
+set NPES = 20 # Try this on more number of PE's
+set WORKDIR = $OUTPUT_PATH/tempdir
+#set FORT_FILE = heat_eqn_2D_mpi.f90
+cd $WORKDIR
+# Change what follows to your system template.
+#
+
+set BOMB = 0
+cat > heat_eqn_nml <<EOF
+&heat_eqn_nml
+ ni = 100,
+ nj =100,
+ del_t = 1.0e-12,
+ nt_steps = 100,
+ io_int = 10,
+ domain_layout=5,4
+/
+EOF
+
+mpiexec_mpt -np $NPES  ./a.out > results || set BOMB = 1
+#mpiexec_mpt -np $NPES -tv ./a.out || set BOMB = 1
+#totalview mpirun -a -np $NPES a.out > results || set BOMB = 1
+#mpirun -np $NPES a.out > results || set BOMB = 1
+cp results $OUTPUT_PATH/results_$NPES
+
+
+exit
+

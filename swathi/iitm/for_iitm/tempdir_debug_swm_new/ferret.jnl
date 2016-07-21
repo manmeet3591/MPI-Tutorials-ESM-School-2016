@@ -1,0 +1,9 @@
+ ! NOAA/PMEL TMAP
+ ! FERRET v6.9  
+ ! Linux 2.6.32-431.5.1.el6.x86_64 64-bit - 04/03/14
+ ! 20-Jul-16 08:53     
+
+use heat_gen_output.nc
+shade temp[l=1]
+shade/lev=(0,1,0.1) temp[l=20]
+quit

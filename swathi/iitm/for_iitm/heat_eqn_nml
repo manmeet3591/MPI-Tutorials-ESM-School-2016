@@ -1,0 +1,6 @@
+&heat_eqn_nml 
+    ni = 12, 
+    nj = 12, 
+    ntsteps =20, 
+    dtts = 1.0e-3
+/

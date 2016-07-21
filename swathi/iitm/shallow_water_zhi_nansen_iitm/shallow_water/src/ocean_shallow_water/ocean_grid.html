@@ -1,0 +1,255 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=EUC-JP">
+<title>Module ocean_grid_mod</title>
+<link type="text/css" href="http://www.gfdl.noaa.gov/~fms/style/doc.css" rel="stylesheet">
+<STYLE TYPE="text/css">
+          .fixed {
+            font-size:medium;
+            font-family:monospace;
+            border-style:none;
+            border-width:0.1em;
+            padding:0.1em;
+            color:#663366;
+          }
+        </STYLE>
+</head>
+<body>
+<a name="TOP"></a><font class="header" size="1"><a href="#PUBLIC INTERFACE">PUBLIC INTERFACE </a>~
+          <a href="#PUBLIC DATA">PUBLIC DATA </a>~
+          <a href="#PUBLIC ROUTINES">PUBLIC ROUTINES </a>~
+          <a href="#NAMELIST">NAMELIST </a>~
+          <a href="#DIAGNOSTIC FIELDS">DIAGNOSTIC FIELDS </a>~
+          <a href="#ERROR MESSAGES">ERROR MESSAGES </a>~
+          <a href="#REFERENCES">REFERENCES </a>~ 
+          <a href="#NOTES">NOTES</a></font>
+<hr>
+<h2>Module ocean_grid_mod</h2>
+<a name="HEADER"></a>
+<!-- BEGIN HEADER -->
+<div>
+<b>Contact:&nbsp;</b><a href="mailto:Ronald.Pacanowski@noaa.gov">Ronald Pacanowski </a>,&nbsp;
+    <a href="mailto:Zhi.Liang@noaa.gov">Zhi Liang </a>
+<br>
+<b>Reviewers:&nbsp;</b>
+<br>
+<b>Change History:&nbsp;</b><a href="http://www.gfdl.noaa.gov/fms-cgi-bin/cvsweb.cgi/FMS/ocean/shallow_water">WebCVS Log</a>
+<br>
+<br>
+</div>
+<!-- END HEADER -->
+<a name="OVERVIEW"></a>
+<hr>
+<h4>OVERVIEW</h4>
+<!-- BEGIN OVERVIEW -->
+<p class="text">   Set up the ocean model grid spacing </p>
+<!-- END OVERVIEW -->
+<a name="DESCRIPTION"></a>
+<!-- BEGIN DESCRIPTION -->
+<div>   This module sets up the ocean model grid based on information read in 
+   from the grid_spec.nc file (when read_my_grid is true) or namelist 
+   setup(when read_my_grid is false). </div>
+<br>
+<!-- END DESCRIPTION -->
+<a name="OTHER MODULES USED"></a>
+<hr>
+<h4>OTHER MODULES USED</h4>
+<!-- BEGIN OTHER MODULES USED -->
+<div>
+<pre>         mpp_mod<br>      mpp_io_mod<br> mpp_domains_mod<br>         fms_mod<br>diag_manager_mod<br>  axis_utils_mod<br>   constants_mod<br> ocean_types_mod</pre>
+</div>
+<!-- END OTHER MODULES USED -->
+<!-- BEGIN PUBLIC INTERFACE -->
+<a name="PUBLIC INTERFACE"></a>
+<hr>
+<h4>PUBLIC INTERFACE</h4>
+<div>
+<dl>
+<dt>
+<a href="#ocean_grids_init">ocean_grids_init</a>:</dt>
+<dd></dd>
+<dt>
+<a href="#set_ocean_grid_size">set_ocean_grid_size</a>:</dt>
+<dd></dd>
+<dt>
+<a href="#set_ocean_grid">set_ocean_grid</a>:</dt>
+<dd></dd>
+<dt>
+<a href="#ocean_grid_end">ocean_grid_end</a>:</dt>
+<dd></dd>
+</dl>
+</div>
+<br>
+<!-- END PUBLIC INTERFACE -->
+<a name="PUBLIC DATA"></a>
+<hr>
+<h4>PUBLIC DATA</h4>
+<!-- BEGIN PUBLIC DATA -->
+<div>None.<br>
+<br>
+</div>
+<!-- END PUBLIC DATA -->
+<a name="PUBLIC ROUTINES"></a>
+<hr>
+<h4>PUBLIC ROUTINES</h4>
+<!-- BEGIN PUBLIC ROUTINES -->
+<ol type="a">
+<li>
+<a name="ocean_grids_init"></a>
+<h4>ocean_grids_init</h4>
+<dl>
+<dt>
+<b>DESCRIPTION</b>
+</dt>
+<dd>   Initialize the grids module. </dd>
+<br>
+<br>
+</dl>
+</li>
+<li>
+<a name="set_ocean_grid_size"></a>
+<h4>set_ocean_grid_size</h4>
+<dl>
+<dt>
+<b>DESCRIPTION</b>
+</dt>
+<dd>   Set the ocean grid size.  when read_my_grid is true, will get grid size
+   from grid file 'INPUT/grid_spec.nc'. otherwise grid size will be determined
+   by the namelist variable nlon and nlat </dd>
+<br>
+<br>
+</dl>
+</li>
+<li>
+<a name="set_ocean_grid"></a>
+<h4>set_ocean_grid</h4>
+<dl>
+<dt>
+<b>DESCRIPTION</b>
+</dt>
+<dd>   define ocean horizontal grid and topography. when read_my_grid is true,
+   grid information will be read from file 'INPUT/grid_spec.nc'. otherwise,
+   grid will be specified by namelist variable nlon, nlat, slon, slat, 
+   dxdeg, dydeg, cyclic, and mean_depth </dd>
+<br>
+<br>
+</dl>
+</li>
+<li>
+<a name="ocean_grid_end"></a>
+<h4>ocean_grid_end</h4>
+<dl>
+<dt>
+<b>DESCRIPTION</b>
+</dt>
+<dd>   destructor routine: release memory. </dd>
+<br>
+<br>
+</dl>
+</li>
+</ol>
+<!-- END PUBLIC ROUTINES -->
+<a name="PUBLIC TYPES"></a>
+<!-- BEGIN PUBLIC TYPES -->
+<!-- END PUBLIC TYPES --><a name="NAMELIST"></a>
+<!-- BEGIN NAMELIST -->
+<hr>
+<h4>NAMELIST</h4>
+<div>
+<b>&amp;ocean_grid_nml</b>
+<br>
+<br>
+<div>
+<dl>
+<dt>
+<tt>read_my_grid</tt>
+</dt>
+<dl>   when true, read grid and topography from grid file INPUT/grid_spec.nc. 
+   when false, the grid and topography are specified by nml nlon, nlat,
+   slon, slat, dxdeg, dydeg, cyclic and mean_depth. <br>
+<span class="type">[logical, default: FALSE]</span>
+</dl>
+<dt>
+<tt>nlon</tt>
+</dt>
+<dl>   number of longitude grid points. 
+   This value will be used when read_my_grid is false. <br>
+<span class="type">[integer, default: 100]</span>
+</dl>
+<dt>
+<tt>nlat</tt>
+</dt>
+<dl>   number of latitude grid points. 
+   This value will be used when read_my_grid is false. <br>
+<span class="type">[integer, default: 80]</span>
+</dl>
+<dt>
+<tt>slon</tt>
+</dt>
+<dl>   starting (westernmost) longitude of "eta" grid point (degrees) <br>
+<span class="type">[real, default: 0.0]</span>
+</dl>
+<dt>
+<tt>slat</tt>
+</dt>
+<dl>   starting (southernmost) latitude of "eta" grid point (degrees) <br>
+<span class="type">[real, default: -20.25]</span>
+</dl>
+<dt>
+<tt>dxdeg</tt>
+</dt>
+<dl>   longitudinal width of a grid box (degrees) <br>
+<span class="type">[real, default: 1.0]</span>
+</dl>
+<dt>
+<tt>dydeg</tt>
+</dt>
+<dl>   latitudinal width of a grid box (degrees) <br>
+<span class="type">[real, default: 0.5]</span>
+</dl>
+<dt>
+<tt>cyclic</tt>
+</dt>
+<dl>   If true, cyclic boundary condition is applied along zonal direction. 
+   If false, the domain is bounded by a solid wall. <br>
+<span class="type">[logical, default: TRUE]</span>
+</dl>
+<dt>
+<tt>mean_depth</tt>
+</dt>
+<dl>   mean ocean depth (meter) disregarding any topography. It can be set to
+   the actual mean ocean depth or the equivalent depth of a single 
+   baroclinic mode (default value is for the 2nd baroclinic mode). <br>
+<span class="type">[real, default: 0.2]</span>
+</dl>
+</dl>
+</div>
+</div>
+<br>
+<!-- END NAMELIST -->
+<a name="DIAGNOSTIC FIELDS"></a>
+<!-- BEGIN DIAGNOSTIC FIELDS -->
+<!-- END DIAGNOSTIC FIELDS --><a name="DATA SETS"></a>
+<!-- BEGIN DATA SETS -->
+<hr>
+<h4>DATA SETS</h4>
+<div>None.<br>
+<br>
+</div>
+<!-- END DATA SETS -->
+<a name="PUBLIC CODE"></a>
+<!-- BEGIN PUBLIC CODE -->
+<!-- END PUBLIC CODE --><a name="ERROR MESSAGES"></a>
+<!-- BEGIN ERROR MESSAGES -->
+<hr>
+<h4>ERROR MESSAGES</h4>
+<div>None.<br>
+<br>
+</div>
+<!-- END ERROR MESSAGES -->
+<hr>
+<div align="right">
+<font size="-1"><a href="#TOP">top</a></font>
+</div>
+</body>
+</html>

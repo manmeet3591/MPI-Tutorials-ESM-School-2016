@@ -1,0 +1,28 @@
+NOTE from PE    0: MPP_DOMAINS_SET_STACK_SIZE: stack size set to    32768.
+NOTE from PE    0: MPP_IO_SET_STACK_SIZE: stack size set to   131072.
+ &HEAT_EQN_NML
+ NI      =          12,
+ NJ      =          12,
+ DTTS    =  1.000000000000000E-003,
+ NTSTEPS =          20
+ /
+ cfl=  1.479289940828403E-003
+ xt0  7.692307692307693E-002  0.153846153846154       0.230769230769231     
+  0.307692307692308       0.384615384615385       0.461538461538462     
+  0.538461538461539       0.615384615384615       0.692307692307692     
+  0.769230769230769       0.846153846153846       0.923076923076923     
+ yt0  7.692307692307693E-002  0.153846153846154       0.230769230769231     
+  0.307692307692308       0.384615384615385       0.461538461538462     
+  0.538461538461539       0.615384615384615       0.692307692307692     
+  0.769230769230769       0.846153846153846       0.923076923076923     
+ domain layout           3           3
+ ni,nj          12          12
+ pe,iscomp,iecomp,jscomp,jecomp           0           1           4           1
+           4
+ netCDF distributed write
+
+Tabulating mpp_clock statistics across    9 PEs...
+
+                                          tmin          tmax          tavg          tstd  tfrac grain pemin pemax
+Total runtime                         0.184763      0.184769      0.184766      0.000002  1.000     0     0     8
+ MPP_STACK high water mark=           0

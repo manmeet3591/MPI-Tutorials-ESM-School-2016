@@ -1,0 +1,6 @@
+&heat_eqn_nml 
+    ni = 30, 
+    nj = 30, 
+    ntsteps =50000, 
+    dtts = 0.000005
+/

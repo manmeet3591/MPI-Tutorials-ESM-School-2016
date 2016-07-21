@@ -1,0 +1,36 @@
+#!/bin/csh -f 
+#PBS -V
+#PBS -l walltime=2:00:00
+#PBS -l select=30:ncpus=15:mpiprocs=15
+#PBS -l place=scatter:excl
+#PBS -q workq
+
+set echo on
+# 05/10/10..For tutorial purposes..
+cd /iitm1/cccr/guest9/swathi/iitm/mpi_llnl_codes
+#source /usr/share/Modules/init/tcsh
+#module purge
+#module load netcdf/4.2.1
+#module load intel-cluster-studio-2013
+module list
+
+
+set OUTPUT_PATH = /iitm1/cccr/guest9/swathi/iitm/mpi_llnl_codes # change this to where you want the output to go
+set MPPNCCOMBINE = "/iitm1/cccr/guest9/iitm-esm/src/postproc/mppncombine/mppnccombine"
+set NPES = 16 # Try this on more number of PE's
+set WORKDIR = $OUTPUT_PATH/tempdir
+set FORT_FILE = heat_eqn_2D_mpi.f90
+cd $WORKDIR
+/bin/rm * 
+# Change what follows to your system template.
+#
+set  FC       = mpiifort
+set  LD       = mpiifort
+set   FFLAGS =  "-I/usr/local/include -I/gpfs1/home/Libs/INTEL/NETCDF4/netcdf-4.2.1/include  -fp-model precise -stack_temps -safe_cray_ptr -ftz -i_dynamic -assume byterecl -g -i4  -override_limits  -traceback -check all"
+set  LDFLAGS  = "-L/gpfs1/home/Libs/INTEL/NETCDF4/netcdf-4.2.1/lib -lnetcdf -lnetcdff -lmpi" 
+set   CFLAGS = -D__IFC
+
+cp ../$FORT_FILE .
+$FC $FFLAGS $FORT_FILE $LDFLAGS 
+exit
+
